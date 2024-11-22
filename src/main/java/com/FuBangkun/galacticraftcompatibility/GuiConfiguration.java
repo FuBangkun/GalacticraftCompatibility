@@ -9,20 +9,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.io.File;
 import java.util.Objects;
 
-import static com.FuBangkun.galacticraftcompatibility.GCC.ConfigDirectory;
+import static com.FuBangkun.galacticraftcompatibility.Constants.*;
 
 @SideOnly(Side.CLIENT)
 public class GuiConfiguration extends GuiScreen {
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation("minecraft:textures/blocks/dirt.png");
-    public static String currentScreen = "gui.galacticraftcompatibility.map";
-    public int[] selectedButtonsIndex = {-1, -1, -1, -1, -1, -1};
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation("galacticraftcore:textures/blocks/deco_block.png");
+    public static String currentScreen = front + "map";
+    public int[] selectedButtonsIndex = {-1, -1, -1, -1, -1, -1, -1};
 
     public GuiConfiguration() {}
 
@@ -31,46 +29,44 @@ public class GuiConfiguration extends GuiScreen {
         super.initGui();
         buttonList.clear();
 
-        if (!Config.enableConfiguration) addButton(new GuiButton(100, 50, height - 40, 100, 20, I18n.format("gui.galacticraftcompatibility.exit")));
-
+        if (!Config.enableConfiguration) Button(100, 175, front + "exit", 50);
         switch (currentScreen) {
             case "gui.galacticraftcompatibility.map":
-                addButton(new GuiButton(0, width / 2 - 100, height / 2 - 30, 200, 20, I18n.format("gui.galacticraftcompatibility.gc")));
-                addButton(new GuiButton(1, width / 2 - 100, height / 2 , 200, 20, I18n.format("gui.galacticraftcompatibility.ac")));
-                addButton(new GuiButton(2, width / 2 - 100, height / 2 + 30, 200, 20, I18n.format("gui.galacticraftcompatibility.ep")));
+                Button(0, front + "gc", -30);
+                Button(1, front + "ac", 0);
+                Button(2, front + "ep", 30);
                 break;
             case "gui.galacticraftcompatibility.mars":
-                addButton(new GuiButton(0, width / 2 - 20, height - 40, 40, 20, I18n.format("gui.back")));
-                addButton(new GuiButton(1, width / 2 - 100, height / 2 - 15, 200, 20, I18n.format("gui.galacticraftcompatibility.gs")));
-                addButton(new GuiButton(2, width / 2 - 100, height / 2 + 15, 200, 20, I18n.format("gui.galacticraftcompatibility.ep")));
-                break;
             case "gui.galacticraftcompatibility.venus":
-                addButton(new GuiButton(0, width / 2 - 20, height - 40, 40, 20, I18n.format("gui.back")));
-                addButton(new GuiButton(1, width / 2 - 100, height / 2 - 15, 200, 20, I18n.format("gui.galacticraftcompatibility.gs")));
-                addButton(new GuiButton(2, width / 2 - 100, height / 2 + 15, 200, 20, I18n.format("gui.galacticraftcompatibility.ep")));
+                Button(0, 20, "gui.back", 40);
+                Button(1, front + "gs", -15);
+                Button(2, front + "ep", 15);
+                break;
+            case "gui.galacticraftcompatibility.planets":
+                Button(0, 20, "gui.back", 40);
+                Button(1, front + "gs", -30);
+                Button(2, front + "ep", 0);
+                Button(3, front + "exit", 30);
                 break;
             case "gui.galacticraftcompatibility.shaders":
-                if (GCC.galaxyspace && GCC.extraplanets) addButton(new GuiButton(0, width / 2 - 20, height - 40, 40, 20, I18n.format("gui.back")));
-                addButton(new GuiButton(1, width / 2 - 100, height / 2 - 15, 200, 20, I18n.format("gui.yes")));
-                addButton(new GuiButton(2, width / 2 - 100, height / 2 + 15, 200, 20, I18n.format("gui.no")));
+                if (GE) Button(0, 20, "gui.back", 40);
+                Button(1, "gui.yes", -15);
+                Button(2, "gui.no", 15);
                 break;
             case "gui.galacticraftcompatibility.menu":
             case "gui.galacticraftcompatibility.craft":
-                addButton(new GuiButton(0, width / 2 - 20, height - 40, 40, 20, I18n.format("gui.back")));
-                addButton(new GuiButton(1, width / 2 - 100, height / 2 - 15, 200, 20, I18n.format("gui.yes")));
-                addButton(new GuiButton(2, width / 2 - 100, height / 2 + 15, 200, 20, I18n.format("gui.no")));
+                Button(0, 20, "gui.back", 40);
+                Button(1, "gui.yes", -15);
+                Button(2, "gui.no", 15);
                 break;
             case "gui.galacticraftcompatibility.warning":
-                addButton(new GuiButton(0, width / 2 - 20, height - 40, 40, 20, I18n.format("gui.back")));
-                addButton(new GuiButton(1, width / 2 - 100, height / 2, 200, 20, I18n.format("menu.quit")));
+                Button(0, 20, "gui.back", 40);
+                Button(1, "menu.quit", 100);
+                break;
             case "gui.galacticraftcompatibility.done":
-                addButton(new GuiButton(0, width / 2 - 20, height - 40, 40, 20, I18n.format("gui.back")));
-                if (Config.enableConfiguration) {
-                    addButton(new GuiButton(1, width / 2 - 100, height / 2, 200, 20, I18n.format("gui.galacticraftcompatibility.quit")));
-                } else {
-                    addButton(new GuiButton(1, width / 2 - 250, height / 2, 200, 20, I18n.format("gui.galacticraftcompatibility.quit")));
-                    addButton(new GuiButton(2, width / 2 + 50, height / 2, 200, 20, I18n.format("gui.galacticraftcompatibility.continue")));
-                }
+                Button(0, 20, "gui.back", 40);
+                Button(1, Config.enableConfiguration ? 50 : 125, front + "quit");
+                if (!Config.enableConfiguration) Button(2, -25, front + "continue");
                 break;
         }
     }
@@ -83,70 +79,48 @@ public class GuiConfiguration extends GuiScreen {
         }
 
         switch (currentScreen) {
-            case "gui.galacticraftcompatibility.map":
-                currentScreen = "gui.galacticraftcompatibility.mars";
+            case front + "map":
+                currentScreen = front + "mars";
                 selectedButtonsIndex[0] = button.id;
                 break;
             case "gui.galacticraftcompatibility.mars":
-                if (button.id == 0) {
-                    currentScreen = "gui.galacticraftcompatibility.map";
-                } else {
-                    currentScreen = "gui.galacticraftcompatibility.venus";
-                    selectedButtonsIndex[1] = button.id;
-                }
+                ScreenChange(button.id,"map", "venus", 1);
                 break;
             case "gui.galacticraftcompatibility.venus":
-                if (button.id == 0) {
-                    currentScreen = "gui.galacticraftcompatibility.mars";
-                } else {
-                    currentScreen = "gui.galacticraftcompatibility.shaders";
-                    selectedButtonsIndex[2] = button.id;
-                }
+                ScreenChange(button.id,"mars", "planets", 2);
+                break;
+            case "gui.galacticraftcompatibility.planets":
+                ScreenChange(button.id,"venus", "shaders", 3);
                 break;
             case "gui.galacticraftcompatibility.shaders":
-                if (button.id == 0) {
-                    currentScreen = "gui.galacticraftcompatibility.venus";
-                } else {
-                    currentScreen = "gui.galacticraftcompatibility.menu";
-                    selectedButtonsIndex[3] = button.id;
-                }
+                ScreenChange(button.id,"planets", "menu", 4);
                 break;
             case "gui.galacticraftcompatibility.menu":
-                if (button.id == 0) {
-                    currentScreen = "gui.galacticraftcompatibility.shaders";
-                } else {
-                    currentScreen = "gui.galacticraftcompatibility.craft";
-                    selectedButtonsIndex[4] = button.id;
-                }
+                ScreenChange(button.id,"shaders", "craft", 5);
                 break;
             case "gui.galacticraftcompatibility.craft":
-                if (button.id == 0) {
-                    currentScreen = "gui.galacticraftcompatibility.menu";
-                } else {
-                    if ((Loader.isModLoaded("tothestars") || (Loader.isModLoaded("planetprogression") && Loader.isModLoaded("galacticresearch")))) {
-                        currentScreen = "gui.galacticraftcompatibility.warning";
-                    } else {
-                        currentScreen = "gui.galacticraftcompatibility.done";
-                        selectedButtonsIndex[5] = button.id;
+                if (button.id == 0) currentScreen = front + "menu";
+                else {
+                    if (TTS || PP && GR) currentScreen = front + "warning";
+                    else {
+                        currentScreen = front + "done";
+                        selectedButtonsIndex[6] = button.id;
                         Modify();
                     }
                 }
                 break;
             case "gui.galacticraftcompatibility.warning":
-                if (button.id == 0) {
-                    currentScreen = "gui.galacticraftcompatibility.craft";
-                } else {
-                    Minecraft.getMinecraft().shutdown();
-                }
+                if (button.id == 0) currentScreen = front + "craft";
+                else Minecraft.getMinecraft().shutdown();
                 break;
             case "gui.galacticraftcompatibility.done":
                 switch (button.id) {
                     case 0:
-                        currentScreen = "gui.galacticraftcompatibility.craft";
+                        currentScreen = front + "craft";
                         break;
                     case 1:
                         Config.enableConfiguration = false;
-                        MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(Tags.MOD_ID, Tags.MOD_NAME, false, false));
+                        MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(MOD_ID, MOD_NAME, false, false));
                         Minecraft.getMinecraft().shutdown();
                         break;
                     case 2:
@@ -165,90 +139,82 @@ public class GuiConfiguration extends GuiScreen {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
         this.drawTexturedModalRect(0, 0, 0, 0, this.width, this.height);
+        int w = width / 2;
+        int h = height / 2;
 
         drawTexturedModalRect(0, 0, 0, 0, width, height);
-        drawCenteredString(fontRenderer, I18n.format("gui.galacticraftcompatibility.title"), width / 2, 20, 0xffffff);
-        if (!Objects.equals(currentScreen, "gui.galacticraftcompatibility.warning")) {
-            drawCenteredString(fontRenderer, I18n.format(currentScreen), width / 2, height / 5, 0xffffff);
-        } else {
+        drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 80, 0xffffff);
+        if (!Objects.equals(currentScreen, front + "warning")) drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 60, 0xffffff);
+        else {
             String var = "";
-            if (Loader.isModLoaded("tothestars") && !Loader.isModLoaded("tothestarsremake")) {
-                var += I18n.format("gui.galacticraftcompatibility.warning1" + System.lineSeparator());
-            }
-            if (Loader.isModLoaded("tothestars") && Loader.isModLoaded("tothestarsremake")) {
-                var += I18n.format("gui.galacticraftcompatibility.warning2" + System.lineSeparator());
-            }
-            if (Loader.isModLoaded("planetprogression") && Loader.isModLoaded("galacticresearch")) {
-                var += I18n.format("gui.galacticraftcompatibility.warning3");
-            }
-            drawCenteredString(fontRenderer, var, width / 2, height / 5, 0xffffff);
+            if (TTS && !TTSR) var += I18n.format(front + "warning1" + System.lineSeparator());
+            if (TTS && TTSR) var += I18n.format(front + "warning2" + System.lineSeparator());
+            if (PP && GR) var += I18n.format(front + "warning3");
+            drawCenteredString(fontRenderer, var, w, h - 60, 0xffffff);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     private void Modify() {
-        Configuration ac = new Configuration(new File(ConfigDirectory, "AsmodeusCore/core.conf"));
-        Configuration ep = new Configuration(new File(ConfigDirectory, "ExtraPlanets.cfg"));
-        Configuration gsc = new Configuration(new File(ConfigDirectory, "GalaxySpace/core.conf"));
-        Configuration gsd = new Configuration(new File(ConfigDirectory, "GalaxySpace/dimensions.conf"));
-        if (GCC.galaxyspace && GCC.extraplanets) {
-            switch (selectedButtonsIndex[0]) {
-                case 0:
-                    setConfigValue(ep, false, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
-                    setConfigValue(ac, false, "galaxymap", "enableNewGalaxyMap");
-                    break;
-                case 1:
-                    setConfigValue(ep, false, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
-                    setConfigValue(ac, true, "galaxymap", "enableNewGalaxyMap");
-                    break;
-                case 2:
-                    setConfigValue(ep, true, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
-                    setConfigValue(ac, false, "galaxymap", "enableNewGalaxyMap");
-                    break;
+        if (GE) {
+            if (selectedButtonsIndex[0] == 0) {
+                setConfigValue(ep, false, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
+                setConfigValue(ac, false, "galaxymap", "enableNewGalaxyMap");
+            } else {
+                setConfigValue(ac, selectedButtonsIndex[0] == 1, "galaxymap", "enableNewGalaxyMap");
+                setConfigValue(ep, selectedButtonsIndex[0] == 2, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
             }
-            switch (selectedButtonsIndex[1]) {
-                case 1:
-                    setConfigValue(ep, true, "space stations", "Mars SpaceStation");
-                    setConfigValue(gsd, false, "general", "enableMarsSpaceStation");
-                case 2:
-                    setConfigValue(ep, false, "space stations", "Mars SpaceStation");
-                    setConfigValue(gsd, true, "general", "enableMarsSpaceStation");
-            }
-            switch (selectedButtonsIndex[2]) {
-                case 1:
-                    setConfigValue(ep, true, "space stations", "Venus SpaceStation");
-                    setConfigValue(gsd, false, "general", "enableVenusSpaceStation");
-                case 2:
-                    setConfigValue(ep, false, "space stations", "Venus SpaceStation");
-                    setConfigValue(gsd, true, "general", "enableVenusSpaceStation");
+            setConfigValue(gsd, selectedButtonsIndex[1] == 1, "general", "enableMarsSpaceStation");
+            setConfigValue(ep, selectedButtonsIndex[1] == 2, "space stations", "Mars SpaceStation");
+            setConfigValue(gsd, selectedButtonsIndex[2] == 1, "general", "enableVenusSpaceStation");
+            setConfigValue(ep, selectedButtonsIndex[2] == 2, "space stations", "Venus SpaceStation");
+            if (selectedButtonsIndex[3] == 1) {
+                return;
+//                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket");
+//                setConfigValue(ep, false, "main dimensions", "Jupiter & Tier 5 Rocket");
+//                setConfigValue(ep, false, "main dimensions", "Saturn & Tier 6 Rocket");
+//                setConfigValue(ep, false, "main dimensions", "Uranus & Tier 7 Rocket");
+//                setConfigValue(ep, false, "main dimensions", "Neptune & Tier 8 Rocket");
+//                setConfigValue(ep, false, "main dimensions", "Pluto & Tier 9 Rocket");
+//                setConfigValue(ep, false, "main dimensions", "Eris & Tier 10 Rocket");
+//                setConfigValue(ep, false, "other dimensions", "TRITON");
+//                setConfigValue(ep, false, "other dimensions", "EUROPA");
+//                setConfigValue(ep, false, "other dimensions", "IO");
+//                setConfigValue(ep, false, "other dimensions", "DEIMOS");
+//                setConfigValue(ep, false, "other dimensions", "CALLISTO");
+//                setConfigValue(ep, false, "other dimensions", "GANYMEDE");
+//                setConfigValue(ep, false, "other dimensions", "RHEA");
+//                setConfigValue(ep, false, "other dimensions", "TITAN");
+//                setConfigValue(ep, false, "other dimensions", "OBERON");
+//                setConfigValue(ep, false, "other dimensions", "TITANIA");
+//                setConfigValue(ep, false, "other dimensions", "IAPETUS");
+//                setConfigValue(ep, false, "other dimensions", "CERES");
+            } else if (selectedButtonsIndex[3] == 2) {
+                setConfigValue(ep, false, "compatibility support", "Enable Galaxy Space Compatibility");
+                setConfigValue(gsd, false, "general", "enableMercury");
+                setConfigValue(gsd, false, "general", "enableJupiter");
+                setConfigValue(gsd, false, "general", "enableSaturn");
+                setConfigValue(gsd, false, "general", "enableUranus");
+                setConfigValue(gsd, false, "general", "enableNeptune");
+                setConfigValue(gsd, false, "general", "enablePluto");
+                setConfigValue(gsd, false, "general", "enableCeres");
             }
         }
-        if (GCC.galaxyspace) {
-            switch (selectedButtonsIndex[3]) {
-                case 1:
-                    setConfigValue(ac, false, "client", "enableSkyAsteroids");
-                    setConfigValue(ac, false, "client", "enableSkyMoon");
-                    setConfigValue(ac, false, "client", "enableSkyOverworld");
-                    setConfigValue(ac, false, "client", "enableSkyOverworldOrbit");
-                case 2:
+        if (GS) {
+            if (selectedButtonsIndex[4] == 1) {
+                setConfigValue(ac, false, "client", "enableSkyAsteroids");
+                setConfigValue(ac, false, "client", "enableSkyMoon");
+                setConfigValue(ac, false, "client", "enableSkyOverworld");
+                setConfigValue(ac, false, "client", "enableSkyOverworldOrbit");
+            } else if (selectedButtonsIndex[4] == 2) {
                     setConfigValue(ac, true, "client", "enableSkyAsteroids");
                     setConfigValue(ac, true, "client", "enableSkyMoon");
                     setConfigValue(ac, true, "client", "enableSkyOverworld");
                     setConfigValue(ac, true, "client", "enableSkyOverworldOrbit");
             }
-            switch (selectedButtonsIndex[4]) {
-                case 1:
-                    setConfigValue(gsc, true, "client", "enableNewMenu");
-                case 2:
-                    setConfigValue(gsc, false, "client", "enableNewMenu");
-            }
-            switch (selectedButtonsIndex[5]) {
-                case 1:
-                    setConfigValue(gsc, true, "hardmode", "enableAdvancedRocketCraft");
-                case 2:
-                    setConfigValue(gsc, false, "hardmode", "enableAdvancedRocketCraft");
-            }
+            setConfigValue(gsc, selectedButtonsIndex[5] == 1, "client", "enableNewMenu");
+            setConfigValue(gsc, selectedButtonsIndex[6] == 1, "hardmode", "enableAdvancedRocketCraft");
         }
     }
 
@@ -260,10 +226,29 @@ public class GuiConfiguration extends GuiScreen {
     @Override
     public void keyTyped(char typedChar, int keyCode) {}
 
-    private void setConfigValue(Configuration config, boolean value, String category, String key) {
+    public static void setConfigValue(Configuration config, boolean value, String category, String key) {
         config.load();
         config.get(category, key, true).set(value);
         config.save();
     }
 
+    private void Button(int id, String value, int y) {
+        addButton(new GuiButton(id, width / 2 - 50, height / 2 + y, 100, 20, I18n.format(value)));
+    }
+
+    private void Button(int id, int x, String value) {
+        addButton(new GuiButton(id, width / 2 - x, height / 2, 100, 20, I18n.format(value)));
+    }
+
+    private void Button(int id, int x, String value, int w) {
+        addButton(new GuiButton(id, width / 2 - x, height / 2 + 80, w, 20, I18n.format(value)));
+    }
+
+    private void ScreenChange(int id, String last, String next, int index) {
+        if (id == 0) currentScreen = front + last;
+        else {
+            currentScreen = front + next;
+            selectedButtonsIndex[index] = id;
+        }
+    }
 }

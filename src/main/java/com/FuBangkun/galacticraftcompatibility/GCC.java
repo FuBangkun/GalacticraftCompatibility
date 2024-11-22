@@ -1,16 +1,17 @@
 package com.FuBangkun.galacticraftcompatibility;
 
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.io.File;
 
+import static com.FuBangkun.galacticraftcompatibility.Constants.*;
+
 @Mod(
-        modid = Tags.MOD_ID,
-        name = Tags.MOD_NAME,
+        modid = MOD_ID,
+        name = MOD_NAME,
         version = Tags.VERSION,
         dependencies =
                 "required-before:galacticraftcore;" +
@@ -22,33 +23,23 @@ import java.io.File;
 )
 public class GCC {
     public static File ConfigDirectory;
-    public static boolean extraplanets = Loader.isModLoaded("extraplanets");
-    public static boolean galaxyspace = Loader.isModLoaded("galaxyspace");
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Configuration config;
         ConfigDirectory = event.getModConfigurationDirectory();
-        if (Config.enableConfiguration && extraplanets) {
-            config = new Configuration(new File(ConfigDirectory, "ExtraPlanets.cfg"));
+        if (Config.enableConfiguration && EP) {
+            Configuration config = ep;
             config.load();
-            if (galaxyspace) {
+            if (GS) {
                 config.get("general settings", "Use Custom Galaxy Map/Celestial Selection Screen", true).set(false);
                 config.get("compatibility support", "Enable Galaxy Space Compatibility", false).set(true);
                 config.get("space stations", "Venus SpaceStation", true).set(false);
                 config.get("space stations", "Mars SpaceStation", true).set(false);
             }
-            if (Loader.isModLoaded("moreplanets")) {
-                config.get("compatibility support", "Enable More Planets Compatibility", false).set(true);
-            }
+            if (MP) config.get("compatibility support", "Enable More Planets Compatibility", false).set(true);
             config.save();
         }
-        if (Loader.isModLoaded("exoplanets")) {
-            config = new Configuration(new File(ConfigDirectory, "Exoplanets/Core.cfg"));
-            config.load();
-            config.get("Core Mod Settings", "warnBetaBuild", true).set(false);
-            config.save();
-        }
+        if (EXO) GuiConfiguration.setConfigValue(exo, false, "Core Mod Settings", "warnBetaBuild");
     }
 
     @Mod.EventHandler
