@@ -2,6 +2,7 @@ gui.galacticraftcompatibility.title=Galacticraft Addons Compatibility Configurat
 gui.galacticraftcompatibility.map=Please select the star map you wish to use.
 gui.galacticraftcompatibility.mars=Please select the Mars Space Station you wish to use.
 gui.galacticraftcompatibility.venus=Please select the Venus Space Station you wish to use.
+gui.galacticraftcompatibility.planets=Focus on Galaxy Space or Extra Planets?
 gui.galacticraftcompatibility.shaders=Will you be using shaders?
 gui.galacticraftcompatibility.menu=Enable the new main menu for Galaxy Space?
 gui.galacticraftcompatibility.craft=Enable advanced rocket craft for Galaxy Space?

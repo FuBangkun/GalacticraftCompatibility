@@ -2,6 +2,7 @@ gui.galacticraftcompatibility.title=Galacticraft附属兼容配置页面
 gui.galacticraftcompatibility.map=请选择你要使用的星图。
 gui.galacticraftcompatibility.mars=请选择你要使用的火星空间站。
 gui.galacticraftcompatibility.venus=请选择你要使用的金星空间站。
+gui.galacticraftcompatibility.planets=侧重于星空还是额外行星？
 gui.galacticraftcompatibility.shaders=是否将会使用光影？
 gui.galacticraftcompatibility.menu=是否启用星空的新主菜单？
 gui.galacticraftcompatibility.craft=是否启用星空的困难火箭配方？
