@@ -29,7 +29,7 @@ public class GuiConfiguration extends GuiScreen {
         super.initGui();
         buttonList.clear();
 
-        if (!Config.enableConfiguration) Button(100, 175, front + "exit", 50);
+        if (!Config.enableConfiguration) Button(100, 200, front + "exit", 100);
         switch (currentScreen) {
             case "gui.galacticraftcompatibility.map":
                 Button(0, front + "gc", -30);
@@ -93,7 +93,15 @@ public class GuiConfiguration extends GuiScreen {
                 ScreenChange(button.id,"venus", "shaders", 3);
                 break;
             case "gui.galacticraftcompatibility.shaders":
-                ScreenChange(button.id,"planets", "menu", 4);
+                if (button.id == 0) currentScreen = front + "planets";
+                else {
+                    if (GS) currentScreen = front + "menu";
+                    else {
+                        currentScreen = front + "done";
+                        selectedButtonsIndex[4] = button.id;
+                        Modify();
+                    }
+                }
                 break;
             case "gui.galacticraftcompatibility.menu":
                 ScreenChange(button.id,"shaders", "craft", 5);
@@ -116,7 +124,8 @@ public class GuiConfiguration extends GuiScreen {
             case "gui.galacticraftcompatibility.done":
                 switch (button.id) {
                     case 0:
-                        currentScreen = front + "craft";
+                        if (GS) currentScreen = front + "craft";
+                        else currentScreen = front + "shaders";
                         break;
                     case 1:
                         Config.enableConfiguration = false;
@@ -170,26 +179,25 @@ public class GuiConfiguration extends GuiScreen {
             setConfigValue(gsd, selectedButtonsIndex[2] == 1, "general", "enableVenusSpaceStation");
             setConfigValue(ep, selectedButtonsIndex[2] == 2, "space stations", "Venus SpaceStation");
             if (selectedButtonsIndex[3] == 1) {
-                return;
-//                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket");
-//                setConfigValue(ep, false, "main dimensions", "Jupiter & Tier 5 Rocket");
-//                setConfigValue(ep, false, "main dimensions", "Saturn & Tier 6 Rocket");
-//                setConfigValue(ep, false, "main dimensions", "Uranus & Tier 7 Rocket");
-//                setConfigValue(ep, false, "main dimensions", "Neptune & Tier 8 Rocket");
-//                setConfigValue(ep, false, "main dimensions", "Pluto & Tier 9 Rocket");
-//                setConfigValue(ep, false, "main dimensions", "Eris & Tier 10 Rocket");
-//                setConfigValue(ep, false, "other dimensions", "TRITON");
-//                setConfigValue(ep, false, "other dimensions", "EUROPA");
-//                setConfigValue(ep, false, "other dimensions", "IO");
-//                setConfigValue(ep, false, "other dimensions", "DEIMOS");
-//                setConfigValue(ep, false, "other dimensions", "CALLISTO");
-//                setConfigValue(ep, false, "other dimensions", "GANYMEDE");
-//                setConfigValue(ep, false, "other dimensions", "RHEA");
-//                setConfigValue(ep, false, "other dimensions", "TITAN");
-//                setConfigValue(ep, false, "other dimensions", "OBERON");
-//                setConfigValue(ep, false, "other dimensions", "TITANIA");
-//                setConfigValue(ep, false, "other dimensions", "IAPETUS");
-//                setConfigValue(ep, false, "other dimensions", "CERES");
+                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket");
+                setConfigValue(ep, false, "main dimensions", "Jupiter & Tier 5 Rocket");
+                setConfigValue(ep, false, "main dimensions", "Saturn & Tier 6 Rocket");
+                setConfigValue(ep, false, "main dimensions", "Uranus & Tier 7 Rocket");
+                setConfigValue(ep, false, "main dimensions", "Neptune & Tier 8 Rocket");
+                setConfigValue(ep, false, "main dimensions", "Pluto & Tier 9 Rocket");
+                setConfigValue(ep, false, "main dimensions", "Eris & Tier 10 Rocket");
+                setConfigValue(ep, false, "other dimensions", "Triton");
+                setConfigValue(ep, false, "other dimensions", "Europa");
+                setConfigValue(ep, false, "other dimensions", "IO");
+                setConfigValue(ep, false, "other dimensions", "Deimos");
+                setConfigValue(ep, false, "other dimensions", "Callisto");
+                setConfigValue(ep, false, "other dimensions", "Ganymede");
+                setConfigValue(ep, false, "other dimensions", "Rhea");
+                setConfigValue(ep, false, "other dimensions", "Titan");
+                setConfigValue(ep, false, "other dimensions", "Oberon");
+                setConfigValue(ep, false, "other dimensions", "Titania");
+                setConfigValue(ep, false, "other dimensions", "Iapetus");
+                setConfigValue(ep, false, "other dimensions", "Ceres");
             } else if (selectedButtonsIndex[3] == 2) {
                 setConfigValue(ep, false, "compatibility support", "Enable Galaxy Space Compatibility");
                 setConfigValue(gsd, false, "general", "enableMercury");

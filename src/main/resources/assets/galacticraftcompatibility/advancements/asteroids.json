@@ -1,0 +1,32 @@
+{
+  "display": {
+    "title": {
+      "translate": "advancement.asteroids.name"
+    },
+    "description": {
+      "translate": "advancement.asteroids.desc"
+    },
+    "icon": {
+      "item": "galacticraftplanets:asteroids_block",
+      "data": 0
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria":{
+    "traveled_to_asteroids":{
+      "trigger":"minecraft:changed_dimension",
+      "conditions":{
+        "to":"planet.asteroids"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "traveled_to_asteroids"
+    ]
+  ],
+  "parent": "gcp:mars"
+}
