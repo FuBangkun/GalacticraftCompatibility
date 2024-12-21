@@ -26,7 +26,8 @@ import static com.FuBangkun.galacticraftcompatibility.Constants.*;
                         "before:galaxyspace;" +
                         "before:moreplanets;" +
                         "before:exoplanets;" +
-                        "before:asmodeuscore"
+                        "before:asmodeuscore;" +
+                        "before:sol"
 )
 public class GCC {
     public static File ConfigDirectory;
@@ -46,6 +47,13 @@ public class GCC {
                 config.get("compatibility support", "Enable Galaxy Space Compatibility", false).set(true);
                 config.get("space stations", "Venus SpaceStation", true).set(false);
                 config.get("space stations", "Mars SpaceStation", true).set(false);
+            }
+            if (SOL) {
+                config = sol;
+                config.get("The Sol - Misc", "Enable Custom Galaxymap?", true). set(false);
+                config.save();
+                config = ep;
+                config.load();
             }
             if (MP) config.get("compatibility support", "Enable More Planets Compatibility", false).set(true);
             config.save();

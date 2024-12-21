@@ -18,11 +18,13 @@ public class Constants {
     public static final boolean TTSR = Loader.isModLoaded("tothestarsremake");
     public static final boolean PP = Loader.isModLoaded("planetprogression");
     public static final boolean GR = Loader.isModLoaded("galacticresearch");
+    public static final boolean SOL = Loader.isModLoaded("sol");
     public static final boolean GE = EP && GS;
     public static final Configuration ac = new Configuration(new File(ConfigDirectory, "AsmodeusCore/core.conf"));
     public static final Configuration ep = new Configuration(new File(ConfigDirectory, "ExtraPlanets.cfg"));
     public static final Configuration gsc = new Configuration(new File(ConfigDirectory, "GalaxySpace/core.conf"));
     public static final Configuration gsd = new Configuration(new File(ConfigDirectory, "GalaxySpace/dimensions.conf"));
     public static final Configuration exo = new Configuration(new File(ConfigDirectory, "Exoplanets/Core.cfg"));
+    public static final Configuration sol = new Configuration(new File(ConfigDirectory, "sol/sol.conf"));
     public static final String front = "gui.galacticraftcompatibility.";
 }

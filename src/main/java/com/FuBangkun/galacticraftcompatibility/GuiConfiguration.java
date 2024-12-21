@@ -166,6 +166,9 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private void Modify() {
+        if (SOL && (GS || EP)) {
+            setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
+        }
         if (GE) {
             if (selectedButtonsIndex[0] == 0) {
                 setConfigValue(ep, false, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
