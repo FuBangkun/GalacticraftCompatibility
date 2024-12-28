@@ -9,8 +9,9 @@ import java.util.Map;
 public class GCCPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{"com.FuBangkun.galacticraftcompatibility.asm.EntityTier2RocketTransformer"};
-        //return new String[]{};
+        return new String[] {
+                "com.FuBangkun.galacticraftcompatibility.asm.EntityTier2RocketTransformer"
+        };
     }
 
     @Override
