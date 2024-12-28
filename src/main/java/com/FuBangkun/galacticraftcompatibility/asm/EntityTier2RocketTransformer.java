@@ -24,7 +24,7 @@ public class EntityTier2RocketTransformer implements IClassTransformer {
 
         for (MethodNode mn : cn.methods) {
             String methodName = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(name, mn.name, mn.desc);
-            if(!"func_70042_X".equals(methodName) && !"getMountedYOffset".equals(methodName))
+            if (!"func_70042_X".equals(methodName) && !"getMountedYOffset".equals(methodName))
                 continue;
             InsnList insnList = new InsnList();
             insnList.add(new LdcInsnNode(1.2D));

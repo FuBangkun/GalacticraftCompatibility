@@ -20,11 +20,18 @@ import static com.FuBangkun.galacticraftcompatibility.Constants.*;
 
 @SideOnly(Side.CLIENT)
 public class GuiConfiguration extends GuiScreen {
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation("galacticraftcore:textures/blocks/deco_block.png");
-    public static String currentScreen = front + "map";
-    public int[] selectedButtonsIndex = {-1, -1, -1, -1, -1, -1, -1};
+    private static final ResourceLocation BACKGROUND_TEXTURE   = new ResourceLocation("galacticraftcore:textures/blocks/deco_block.png");
+    public static        String           currentScreen        = front + "map";
+    public               int[]            selectedButtonsIndex = {-1, -1, -1, -1, -1, -1, -1};
 
-    public GuiConfiguration() {}
+    public GuiConfiguration() {
+    }
+
+    public static void setConfigValue(Configuration config, boolean value, String category, String key) {
+        config.load();
+        config.get(category, key, true).set(value);
+        config.save();
+    }
 
     @Override
     public void initGui() {
@@ -82,13 +89,13 @@ public class GuiConfiguration extends GuiScreen {
                 selectedButtonsIndex[0] = button.id;
                 break;
             case "gui.galacticraftcompatibility.mars":
-                ScreenChange(button.id,"map", "venus", 1);
+                ScreenChange(button.id, "map", "venus", 1);
                 break;
             case "gui.galacticraftcompatibility.venus":
-                ScreenChange(button.id,"mars", "planets", 2);
+                ScreenChange(button.id, "mars", "planets", 2);
                 break;
             case "gui.galacticraftcompatibility.planets":
-                ScreenChange(button.id,"venus", "shaders", 3);
+                ScreenChange(button.id, "venus", "shaders", 3);
                 break;
             case "gui.galacticraftcompatibility.shaders":
                 if (button.id == 0) currentScreen = front + "planets";
@@ -102,7 +109,7 @@ public class GuiConfiguration extends GuiScreen {
                 }
                 break;
             case "gui.galacticraftcompatibility.menu":
-                ScreenChange(button.id,"shaders", "craft", 5);
+                ScreenChange(button.id, "shaders", "craft", 5);
                 break;
             case "gui.galacticraftcompatibility.craft":
                 if (button.id == 0) currentScreen = front + "menu";
@@ -203,10 +210,10 @@ public class GuiConfiguration extends GuiScreen {
                 setConfigValue(ac, false, "client", "enableSkyOverworld");
                 setConfigValue(ac, false, "client", "enableSkyOverworldOrbit");
             } else if (selectedButtonsIndex[4] == 2) {
-                    setConfigValue(ac, true, "client", "enableSkyAsteroids");
-                    setConfigValue(ac, true, "client", "enableSkyMoon");
-                    setConfigValue(ac, true, "client", "enableSkyOverworld");
-                    setConfigValue(ac, true, "client", "enableSkyOverworldOrbit");
+                setConfigValue(ac, true, "client", "enableSkyAsteroids");
+                setConfigValue(ac, true, "client", "enableSkyMoon");
+                setConfigValue(ac, true, "client", "enableSkyOverworld");
+                setConfigValue(ac, true, "client", "enableSkyOverworldOrbit");
             }
             setConfigValue(gsc, selectedButtonsIndex[5] == 1, "client", "enableNewMenu");
             setConfigValue(gsc, selectedButtonsIndex[6] == 1, "hardmode", "enableAdvancedRocketCraft");
@@ -219,12 +226,7 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) {}
-
-    public static void setConfigValue(Configuration config, boolean value, String category, String key) {
-        config.load();
-        config.get(category, key, true).set(value);
-        config.save();
+    public void keyTyped(char typedChar, int keyCode) {
     }
 
     private void Button(int id, String value, int y) {

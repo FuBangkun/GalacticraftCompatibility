@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 import static com.FuBangkun.galacticraftcompatibility.Constants.*;
+import static com.FuBangkun.galacticraftcompatibility.GuiConfiguration.setConfigValue;
 
 @Mod(
         modid = MOD_ID,
@@ -26,12 +27,12 @@ import static com.FuBangkun.galacticraftcompatibility.Constants.*;
         dependencies =
                 "required-after:galacticraftcore;" +
                         "after:galacticraftplanets;" +
-                        "after:extraplanets;" +
-                        "after:galaxyspace;" +
-                        "after:moreplanets;" +
-                        "after:exoplanets;" +
-                        "after:asmodeuscore;" +
-                        "after:sol"
+                        "before:extraplanets;" +
+                        "before:galaxyspace;" +
+                        "before:moreplanets;" +
+                        "before:exoplanets;" +
+                        "before:asmodeuscore;" +
+                        "before:sol"
 )
 public class GCC {
     public static File ConfigDirectory;
@@ -56,17 +57,11 @@ public class GCC {
                 config.get("space stations", "Venus SpaceStation", true).set(false);
                 config.get("space stations", "Mars SpaceStation", true).set(false);
             }
-            if (SOL) {
-                config = sol;
-                config.get("The Sol - Misc", "Enable Custom Galaxymap?", true). set(false);
-                config.save();
-                config = ep;
-                config.load();
-            }
             if (MP) config.get("compatibility support", "Enable More Planets Compatibility", false).set(true);
             config.save();
         }
-        if (EXO) GuiConfiguration.setConfigValue(exo, false, "Core Mod Settings", "warnBetaBuild");
+        if (EXO) setConfigValue(exo, false, "Core Mod Settings", "warnBetaBuild");
+        if (SOL && (GS || EP)) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
     }
 
     @Mod.EventHandler
