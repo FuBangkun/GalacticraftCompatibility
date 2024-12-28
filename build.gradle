@@ -144,7 +144,6 @@ dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
-    implementation fileTree(dir: 'libs', include: '*.jar')
 }
 
 apply from: 'gradle/scripts/dependencies.gradle'
@@ -257,16 +256,6 @@ test {
             showStandardStreams = true
         }
     }
-}
-
-String parserChangelog() {
-    String parsedChangelog = changelog.renderItem(
-            changelog.get(propertyString('mod_version')).withHeader(false).withEmptySections(false),
-            Changelog.OutputType.MARKDOWN)
-    if (parsedChangelog.isEmpty()) {
-        throw new GradleException('publish_with_changelog is true, but the changelog for the latest version is empty!')
-    }
-    return parsedChangelog
 }
 
 tasks.register('generateMixinJson') {

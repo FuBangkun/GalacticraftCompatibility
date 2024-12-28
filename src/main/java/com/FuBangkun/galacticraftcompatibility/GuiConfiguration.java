@@ -12,8 +12,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Objects;
-
 import static com.FuBangkun.galacticraftcompatibility.Constants.*;
 
 @SideOnly(Side.CLIENT)
@@ -58,10 +56,6 @@ public class GuiConfiguration extends GuiScreen {
                 Button(0, 20, "gui.back", 40);
                 Button(1, "gui.yes", -15);
                 Button(2, "gui.no", 15);
-                break;
-            case "gui.galacticraftcompatibility.warning":
-                Button(0, 20, "gui.back", 40);
-                Button(1, "menu.quit", 100);
                 break;
             case "gui.galacticraftcompatibility.done":
                 Button(0, 20, "gui.back", 40);
@@ -109,17 +103,10 @@ public class GuiConfiguration extends GuiScreen {
             case "gui.galacticraftcompatibility.craft":
                 if (button.id == 0) currentScreen = front + "menu";
                 else {
-                    if (TTS || PP && GR) currentScreen = front + "warning";
-                    else {
-                        currentScreen = front + "done";
-                        selectedButtonsIndex[6] = button.id;
-                        Modify();
-                    }
+                    currentScreen = front + "done";
+                    selectedButtonsIndex[6] = button.id;
+                    Modify();
                 }
-                break;
-            case "gui.galacticraftcompatibility.warning":
-                if (button.id == 0) currentScreen = front + "craft";
-                else Minecraft.getMinecraft().shutdown();
                 break;
             case "gui.galacticraftcompatibility.done":
                 switch (button.id) {
@@ -153,14 +140,7 @@ public class GuiConfiguration extends GuiScreen {
 
         drawTexturedModalRect(0, 0, 0, 0, width, height);
         drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 80, 0xffffff);
-        if (!Objects.equals(currentScreen, front + "warning")) drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 60, 0xffffff);
-        else {
-            String var = "";
-            if (TTS && !TTSR) var += I18n.format(front + "warning1" + System.lineSeparator());
-            if (TTS && TTSR) var += I18n.format(front + "warning2" + System.lineSeparator());
-            if (PP && GR) var += I18n.format(front + "warning3");
-            drawCenteredString(fontRenderer, var, w, h - 60, 0xffffff);
-        }
+        drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 60, 0xffffff);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

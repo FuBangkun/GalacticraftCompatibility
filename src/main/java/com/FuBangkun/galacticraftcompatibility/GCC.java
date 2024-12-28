@@ -22,12 +22,12 @@ import static com.FuBangkun.galacticraftcompatibility.Constants.*;
         dependencies =
                 "required-after:galacticraftcore;" +
                         "after:galacticraftplanets;" +
-                        "before:extraplanets;" +
-                        "before:galaxyspace;" +
-                        "before:moreplanets;" +
-                        "before:exoplanets;" +
-                        "before:asmodeuscore;" +
-                        "before:sol"
+                        "after:extraplanets;" +
+                        "after:galaxyspace;" +
+                        "after:moreplanets;" +
+                        "after:exoplanets;" +
+                        "after:asmodeuscore;" +
+                        "after:sol"
 )
 public class GCC {
     public static File ConfigDirectory;
@@ -37,6 +37,10 @@ public class GCC {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
+        if (LRM) throw new RuntimeException("Please remove Legacy Rocket Model.");
+        if (PP && GR) throw new RuntimeException("Please remove Planet Progression or Galactic Research.");
+        if (TTS && TTSR) throw new RuntimeException("Please remove ToTheStars (Not ToTheStarsRemake).");
+        if (TTS) logger.info("Please remove ToTheStars and install ToTheStarsRemake");
         RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, manager -> new RenderTier2Rocket(manager, new ModelTier2Rocket()));
         ConfigDirectory = event.getModConfigurationDirectory();
         if (Config.enableConfiguration && EP) {
