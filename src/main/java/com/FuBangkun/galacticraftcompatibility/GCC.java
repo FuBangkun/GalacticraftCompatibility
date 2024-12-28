@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ */
+
 package com.FuBangkun.galacticraftcompatibility;
 
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
