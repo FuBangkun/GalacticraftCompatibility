@@ -41,13 +41,13 @@ public class GCC {
     @SideOnly(Side.CLIENT)
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        ConfigDirectory = event.getModConfigurationDirectory();
         logger = event.getModLog();
         if (LRM) throw new RuntimeException("Please remove Legacy Rocket Model.");
         if (PP && GR) throw new RuntimeException("Please remove Planet Progression or Galactic Research.");
         if (TTS && TTSR) throw new RuntimeException("Please remove ToTheStars (Not ToTheStarsRemake).");
         if (TTS) logger.info("Please remove ToTheStars and install ToTheStarsRemake");
         RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, manager -> new RenderTier2Rocket(manager, new ModelTier2Rocket()));
-        ConfigDirectory = event.getModConfigurationDirectory();
         if (Config.enableConfiguration && EP) {
             Configuration config = ep;
             config.load();
