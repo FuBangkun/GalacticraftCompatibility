@@ -6,6 +6,7 @@ package com.FuBangkun.galacticraftcompatibility;
 
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -13,9 +14,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import static com.FuBangkun.galacticraftcompatibility.Constants.*;
 import static com.FuBangkun.galacticraftcompatibility.GuiConfiguration.setConfigValue;
@@ -35,14 +42,16 @@ import static com.FuBangkun.galacticraftcompatibility.GuiConfiguration.setConfig
                         "before:sol"
 )
 public class GCC {
-    public static File ConfigDirectory;
-    public static Logger logger;
+    private static final String name = "GCC Translation Correction Resource Pack";
+    public static        File   ConfigDirectory;
+    public static        Logger logger;
 
     @SideOnly(Side.CLIENT)
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         ConfigDirectory = event.getModConfigurationDirectory();
         logger = event.getModLog();
+        Constants.init();
         if (LRM) throw new RuntimeException("Please remove Legacy Rocket Model.");
         if (PP && GR) throw new RuntimeException("Please remove Planet Progression or Galactic Research.");
         if (TTS && TTSR) throw new RuntimeException("Please remove ToTheStars (Not ToTheStarsRemake).");
@@ -62,10 +71,39 @@ public class GCC {
         }
         if (EXO) setConfigValue(exo, false, "Core Mod Settings", "warnBetaBuild");
         if (SOL && (GS || EP)) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
+
+        try (JarFile jarFile = new JarFile(event.getSourceFile())) {
+            extractResourcePack(jarFile);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandOpenConfiguration());
+    }
+
+
+    private void extractResourcePack(JarFile jarFile) throws IOException {
+        String resourcePackPath = "resourcepacks/" + name + "/";
+        File   targetDir        = new File(new File(Minecraft.getMinecraft().gameDir, "resourcepacks"), name);
+        if (jarFile.getJarEntry(resourcePackPath + "pack.mcmeta") == null) return;
+        FileUtils.deleteDirectory(targetDir);
+        targetDir.mkdirs();
+        for (JarEntry entry : jarFile.stream().toArray(JarEntry[]::new))
+            if (entry.getName().startsWith(resourcePackPath)) {
+                String relativePath = entry.getName().substring(resourcePackPath.length());
+                File   targetFile   = new File(targetDir, relativePath);
+                if (entry.isDirectory()) targetFile.mkdirs();
+                else {
+                    try (InputStream is = jarFile.getInputStream(entry);
+                         FileOutputStream fos = new FileOutputStream(targetFile)) {
+                        byte[] buffer = new byte[1024];
+                        int    length;
+                        while ((length = is.read(buffer)) > 0) fos.write(buffer, 0, length);
+                    }
+                }
+            }
     }
 }
