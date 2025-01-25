@@ -28,5 +28,5 @@
       "traveled_to_asteroids"
     ]
   ],
-  "parent": "gcp:mars"
+  "parent": "galacticraftcompatibility:mars"
 }
