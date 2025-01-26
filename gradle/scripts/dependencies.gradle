@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ */
+
 apply from: 'gradle/scripts/helpers.gradle'
 
 repositories {
@@ -30,13 +34,14 @@ repositories {
 
 dependencies{
     implementation("curse.maven:galacticraft-legacy-564236:4671122")
-    implementation("curse.maven:galaxy-space-addon-for-galacticraft-238770:5407779")
-    implementation("curse.maven:asmodeuscore-303101:5407778")
+    implementation("curse.maven:galaxy-space-addon-for-galacticraft-238770:6058956")
+    implementation("curse.maven:asmodeuscore-303101:6058953")
     implementation("curse.maven:extraplanets-241291:5339029")
     implementation("curse.maven:mjrlegendslib-284331:3344068")
     implementation("curse.maven:more-planets-gc-addon-261990:5063201")
     implementation("curse.maven:stevekungs-lib-296019:5064118")
     implementation("curse.maven:mixin-booter-419286:5906634")
     implementation("curse.maven:zollern-galaxy-241940:3215921")
+    implementation("curse.maven:mixin-booter-419286:6118480")
     implementation fileTree(dir: 'libs', include: '*.jar')
 }

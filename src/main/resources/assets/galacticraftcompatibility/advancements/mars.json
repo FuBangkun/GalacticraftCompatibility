@@ -15,11 +15,11 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria":{
-    "traveled_to_mars":{
-      "trigger":"minecraft:changed_dimension",
-      "conditions":{
-        "to":"planet.mars"
+  "criteria": {
+    "traveled_to_mars": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "planet.mars"
       }
     }
   },

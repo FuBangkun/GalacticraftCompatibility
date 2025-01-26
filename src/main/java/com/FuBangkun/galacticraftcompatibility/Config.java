@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2025 FuBangkun. All Rights Reserved.
  */
 
 package com.FuBangkun.galacticraftcompatibility;
@@ -30,7 +30,6 @@ public class Config {
 
     @SubscribeEvent
     public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(MOD_ID))
-            ConfigManager.sync(MOD_ID, net.minecraftforge.common.config.Config.Type.INSTANCE);
+        if (event.getModID().equals(MOD_ID)) ConfigManager.sync(MOD_ID, net.minecraftforge.common.config.Config.Type.INSTANCE);
     }
 }

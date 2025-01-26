@@ -15,11 +15,11 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria":{
-    "traveled_to_asteroids":{
-      "trigger":"minecraft:changed_dimension",
-      "conditions":{
-        "to":"planet.asteroids"
+  "criteria": {
+    "traveled_to_asteroids": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "planet.asteroids"
       }
     }
   },
@@ -28,5 +28,5 @@
       "traveled_to_asteroids"
     ]
   ],
-  "parent": "gcp:mars"
+  "parent": "galacticraftcompatibility:mars"
 }
