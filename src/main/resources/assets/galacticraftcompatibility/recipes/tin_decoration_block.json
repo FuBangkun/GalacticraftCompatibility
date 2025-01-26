@@ -13,7 +13,8 @@
     "X": {
       "type": "forge:ore_dict",
       "ore": "stone"
-    },    "Y": {
+    },
+    "Y": {
       "type": "forge:ore_dict",
       "ore": "compressedTin"
     }

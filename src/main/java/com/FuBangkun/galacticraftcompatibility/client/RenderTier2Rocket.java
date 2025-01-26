@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2025 FuBangkun. All Rights Reserved.
  */
 
-package com.FuBangkun.galacticraftcompatibility;
+package com.FuBangkun.galacticraftcompatibility.client;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import net.minecraft.client.model.ModelBase;

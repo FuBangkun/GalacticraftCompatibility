@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2025 FuBangkun. All Rights Reserved.
  */
 
 package com.FuBangkun.galacticraftcompatibility;
 
+import com.FuBangkun.galacticraftcompatibility.client.RenderTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
@@ -84,7 +85,6 @@ public class GCC {
         event.registerServerCommand(new CommandOpenConfiguration());
     }
 
-
     private void extractResourcePack(JarFile jarFile) throws IOException {
         String resourcePackPath = "resourcepacks/" + name + "/";
         File   targetDir        = new File(new File(Minecraft.getMinecraft().gameDir, "resourcepacks"), name);
@@ -97,6 +97,9 @@ public class GCC {
                 File   targetFile   = new File(targetDir, relativePath);
                 if (entry.isDirectory()) targetFile.mkdirs();
                 else {
+                    if (targetFile.exists()) targetFile.delete();
+                    File parentDir = targetFile.getParentFile();
+                    if (!parentDir.exists()) parentDir.mkdirs();
                     try (InputStream is = jarFile.getInputStream(entry);
                          FileOutputStream fos = new FileOutputStream(targetFile)) {
                         byte[] buffer = new byte[1024];

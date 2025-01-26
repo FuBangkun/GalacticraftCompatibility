@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2025 FuBangkun. All Rights Reserved.
  */
 
 package com.FuBangkun.galacticraftcompatibility;
@@ -37,7 +37,6 @@ public class GuiConfiguration extends GuiScreen {
     public void initGui() {
         super.initGui();
         buttonList.clear();
-
         if (!Config.enableConfiguration) Button(100, 200, front + "exit", 100);
         switch (currentScreen) {
             case "gui.galacticraftcompatibility.map":
@@ -82,7 +81,6 @@ public class GuiConfiguration extends GuiScreen {
             Minecraft.getMinecraft().displayGuiScreen(null);
             return;
         }
-
         switch (currentScreen) {
             case front + "map":
                 currentScreen = front + "mars";
@@ -136,7 +134,6 @@ public class GuiConfiguration extends GuiScreen {
                 }
                 break;
         }
-
         initGui();
     }
 
@@ -148,18 +145,14 @@ public class GuiConfiguration extends GuiScreen {
         this.drawTexturedModalRect(0, 0, 0, 0, this.width, this.height);
         int w = width / 2;
         int h = height / 2;
-
         drawTexturedModalRect(0, 0, 0, 0, width, height);
         drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 80, 0xffffff);
         drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 60, 0xffffff);
-
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     private void Modify() {
-        if (SOL && (GS || EP)) {
-            setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
-        }
+        if (SOL && (GS || EP)) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
         if (GE) {
             if (selectedButtonsIndex[0] == 0) {
                 setConfigValue(ep, false, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");

@@ -15,11 +15,11 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria":{
-    "traveled_to_venus":{
-      "trigger":"minecraft:changed_dimension",
-      "conditions":{
-        "to":"planet.venus"
+  "criteria": {
+    "traveled_to_venus": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "planet.venus"
       }
     }
   },
