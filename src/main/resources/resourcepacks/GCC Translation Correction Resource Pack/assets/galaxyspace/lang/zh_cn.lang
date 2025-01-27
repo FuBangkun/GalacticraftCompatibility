@@ -254,7 +254,7 @@ tile.wind_generator.desc=利用风力产生能量，在拥有大气的星球上�
 tile.adv_wind_generator.name=高级风力发电机
 
 tile.rocket_assembler.name=火箭组装台
-tile.rocket_assembler.desc=用CNSA工作台里制作的零件来组装火箭。
+tile.rocket_assembler.desc=用CNSA工程台里制作的零件来组装火箭。
 
 tile.universal_recycler.name=通用回收机
 tile.universal_recycler.desc=从资源中提取出其他资源。一些产物是液态的。
@@ -340,7 +340,7 @@ tile.treasure_t5.desc=生成于木卫一地牢。击杀木卫一地牢Boss后可
 |/////////////////////////////////////////|
 #|||||||||||||||||Items||||||||||||||||||||
 |\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|
-item.schematics.name=CNSA工作台图纸
+item.schematics.name=CNSA工程设计图
 item.hdp.name=重型钢板
 item.dungeon_keys.name=地牢钥匙
 item.geo_scanner.name=地质勘探仪
@@ -400,7 +400,7 @@ item.hematite.name=赤铁矿
 item.antiradiation_tablets.name=抗辐射含片
 item.schematic_box.name=图纸盒子
 item.module_base.name=空白模块
-item.blank_schematic.name=空白设计图
+item.blank_schematic.name=空白CNSA工程设计图
 item.volcanic_stone.name=火山岩碎片
 item.meteoric_iron_fragments.name=陨铁碎片
 item.uranium_fragments.name=铀
@@ -506,7 +506,7 @@ gui.tier5.desc=五阶
 gui.tier6.desc=六阶
 
 gui.bonemeal.desc=近似于骨粉
-gui.schematic_box.desc=包含所有重型火箭元件的设计图纸。右击打开。
+gui.schematic_box.desc=包含所有重型火箭元件的CNSA工程设计图。右击打开。
 
 gui.gravitation_module_stabilisation_1.desc=安装稳定模块
 gui.gravitation_module_stabilisation_2.desc=使设备工作半径内的大气压强稳定在1Pa。

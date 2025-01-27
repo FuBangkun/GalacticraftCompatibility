@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2025 FuBangkun. All Rights Reserved.
  */
 
 apply from: 'gradle/scripts/helpers.gradle'
@@ -43,5 +43,5 @@ dependencies{
     implementation("curse.maven:mixin-booter-419286:5906634")
     implementation("curse.maven:zollern-galaxy-241940:3215921")
     implementation("curse.maven:mixin-booter-419286:6118480")
-    implementation fileTree(dir: 'libs', include: '*.jar')
+    runtimeOnly("curse.maven:jei-238222:5846804")
 }
