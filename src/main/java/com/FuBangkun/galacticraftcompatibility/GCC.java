@@ -88,7 +88,7 @@ public class GCC {
     private void extractResourcePack(JarFile jarFile) throws IOException {
         String resourcePackPath = "resourcepacks/" + name + "/";
         File   targetDir        = new File(new File(Minecraft.getMinecraft().gameDir, "resourcepacks"), name);
-        if (jarFile.getJarEntry(resourcePackPath + "pack.mcmeta") == null) return;
+        if (jarFile.getJarEntry(resourcePackPath + "pack.mcmeta") == null) targetDir.delete();
         FileUtils.deleteDirectory(targetDir);
         targetDir.mkdirs();
         for (JarEntry entry : jarFile.stream().toArray(JarEntry[]::new))
@@ -97,9 +97,6 @@ public class GCC {
                 File   targetFile   = new File(targetDir, relativePath);
                 if (entry.isDirectory()) targetFile.mkdirs();
                 else {
-                    if (targetFile.exists()) targetFile.delete();
-                    File parentDir = targetFile.getParentFile();
-                    if (!parentDir.exists()) parentDir.mkdirs();
                     try (InputStream is = jarFile.getInputStream(entry);
                          FileOutputStream fos = new FileOutputStream(targetFile)) {
                         byte[] buffer = new byte[1024];
