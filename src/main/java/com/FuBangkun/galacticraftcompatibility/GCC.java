@@ -8,6 +8,7 @@ import com.FuBangkun.galacticraftcompatibility.client.RenderTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -29,8 +30,8 @@ import static com.FuBangkun.galacticraftcompatibility.Constants.*;
 import static com.FuBangkun.galacticraftcompatibility.GuiConfiguration.setConfigValue;
 
 @Mod(
-        modid = MOD_ID,
-        name = MOD_NAME,
+        modid = Tags.MOD_ID,
+        name = Tags.MOD_NAME,
         version = Tags.VERSION,
         dependencies =
                 "required-after:galacticraftcore;" +
@@ -53,10 +54,10 @@ public class GCC {
         ConfigDirectory = event.getModConfigurationDirectory();
         logger = event.getModLog();
         Constants.init();
-        if (LRM) throw new RuntimeException("Please remove Legacy Rocket Model.");
-        if (PP && GR) throw new RuntimeException("Please remove Planet Progression or Galactic Research.");
-        if (TTS && TTSR) throw new RuntimeException("Please remove ToTheStars (Not ToTheStarsRemake).");
-        if (TTS) logger.info("Please remove ToTheStars and install ToTheStarsRemake");
+        if (LRM) throw new RuntimeException(I18n.format(front + "error4"));
+        if (PP && GR) throw new RuntimeException(I18n.format(front + "error3"));
+        if (TTS && TTSR) throw new RuntimeException(I18n.format(front + "error2"));
+        if (TTS) logger.info(I18n.format(front + "error1"));
         RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, manager -> new RenderTier2Rocket(manager, new ModelTier2Rocket()));
         if (Config.enableConfiguration && EP) {
             Configuration config = ep;
