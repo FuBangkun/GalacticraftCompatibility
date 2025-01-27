@@ -5,6 +5,7 @@
 package com.FuBangkun.galacticraftcompatibility.client;
 
 import asmodeuscore.core.registers.potions.ACPotions;
+import com.FuBangkun.galacticraftcompatibility.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -19,8 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
-
-import static com.FuBangkun.galacticraftcompatibility.Constants.MOD_ID;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class RenderOverlay {
@@ -41,7 +40,7 @@ public class RenderOverlay {
             GlStateManager.pushMatrix();
             GlStateManager.disableDepth();
             GlStateManager.depthMask(false);
-            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(MOD_ID, "textures/gui/overlay/" + texturePath));
+            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(Tags.MOD_ID, "textures/gui/overlay/" + texturePath));
             Tessellator   tessellator = Tessellator.getInstance();
             BufferBuilder buffer      = tessellator.getBuffer();
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
