@@ -12,8 +12,6 @@ import java.io.File;
 import static com.FuBangkun.galacticraftcompatibility.GCC.ConfigDirectory;
 
 public class Constants {
-    public static final String        MOD_ID   = Tags.MOD_ID;
-    public static final String        MOD_NAME = Tags.MOD_NAME;
     public static final String        front    = "gui.galacticraftcompatibility.";
     public static boolean       EP;
     public static boolean       GS;

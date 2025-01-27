@@ -24,8 +24,7 @@ public class GuiConfiguration extends GuiScreen {
     public static        String           currentScreen        = front + "map";
     public               int[]            selectedButtonsIndex = {-1, -1, -1, -1, -1, -1, -1};
 
-    public GuiConfiguration() {
-    }
+    public GuiConfiguration() {}
 
     public static void setConfigValue(Configuration config, boolean value, String category, String key) {
         config.load();
@@ -125,7 +124,7 @@ public class GuiConfiguration extends GuiScreen {
                         break;
                     case 1:
                         Config.enableConfiguration = false;
-                        MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(MOD_ID, MOD_NAME, false, false));
+                        MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(Tags.MOD_ID, Tags.MOD_NAME, false, false));
                         Minecraft.getMinecraft().shutdown();
                         break;
                     case 2:
@@ -141,13 +140,15 @@ public class GuiConfiguration extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-        this.drawTexturedModalRect(0, 0, 0, 0, this.width, this.height);
+        mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
+        drawTexturedModalRect(0, 0, 0, 0, width, height);
         int w = width / 2;
         int h = height / 2;
         drawTexturedModalRect(0, 0, 0, 0, width, height);
-        drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 80, 0xffffff);
-        drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 60, 0xffffff);
+        if (currentScreen.equals(front + "planets")) drawCenteredString(fontRenderer, I18n.format(front + "planets.warning1"), w, h - 65, 0xff0000);
+        if (currentScreen.equals(front + "planets")) drawCenteredString(fontRenderer, I18n.format(front + "planets.warning2"), w, h - 50, 0xff0000);
+        drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 95, 0xffffff);
+        drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 80, 0xffffff);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -166,6 +167,7 @@ public class GuiConfiguration extends GuiScreen {
             setConfigValue(gsd, selectedButtonsIndex[2] == 1, "general", "enableVenusSpaceStation");
             setConfigValue(ep, selectedButtonsIndex[2] == 2, "space stations", "Venus SpaceStation");
             if (selectedButtonsIndex[3] == 1) {
+                //ERROR
                 setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket");
                 setConfigValue(ep, false, "main dimensions", "Jupiter & Tier 5 Rocket");
                 setConfigValue(ep, false, "main dimensions", "Saturn & Tier 6 Rocket");
