@@ -13,6 +13,7 @@ import static com.FuBangkun.galacticraftcompatibility.GCC.ConfigDirectory;
 
 public class Constants {
     public static final String        front    = "gui.galacticraftcompatibility.";
+    public static boolean AC;
     public static boolean       EP;
     public static boolean       GS;
     public static boolean       MP;
@@ -32,6 +33,7 @@ public class Constants {
     public static Configuration sol;
 
     public static void init() {
+        AC = Loader.isModLoaded("asmodeuscore");
         EP   = Loader.isModLoaded("extraplanets");
         GS   = Loader.isModLoaded("galaxyspace");
         MP   = Loader.isModLoaded("moreplanets");
