@@ -5,6 +5,7 @@
 package com.FuBangkun.galacticraftcompatibility.client;
 
 import asmodeuscore.core.registers.potions.ACPotions;
+import com.FuBangkun.galacticraftcompatibility.Constants;
 import com.FuBangkun.galacticraftcompatibility.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -25,7 +26,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderOverlay {
     @SubscribeEvent
     public static void onRenderGameOverlayEvent(RenderGameOverlayEvent.Post event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET && Constants.AC) {
             renderPotionOverlay(event.getResolution(), ACPotions.radiation, "radiation_overlay.png");
             renderPotionOverlay(event.getResolution(), ACPotions.hypothermia, "hypothermia_overlay.png");
             renderPotionOverlay(event.getResolution(), ACPotions.overheat, "hyperthermia_overlay.png");
