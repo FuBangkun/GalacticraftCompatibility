@@ -1,84 +1,91 @@
 /*
- * Copyright (c) 2025 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2024-2025 FuBangkun. All Rights Reserved.
  */
 
 package com.FuBangkun.galacticraftcompatibility;
 
-import com.FuBangkun.galacticraftcompatibility.client.RenderTier2Rocket;
-import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
-import static com.FuBangkun.galacticraftcompatibility.Constants.*;
-import static com.FuBangkun.galacticraftcompatibility.GuiConfiguration.setConfigValue;
-
+@Mod.EventBusSubscriber(modid = Tags.MOD_ID)
+@Config(modid = Tags.MOD_ID)
 @Mod(
         modid = Tags.MOD_ID,
         name = Tags.MOD_NAME,
         version = Tags.VERSION,
-        dependencies =
-                "required-after:galacticraftcore;" +
-                        "after:galacticraftplanets;" +
-                        "before:extraplanets;" +
-                        "before:galaxyspace;" +
-                        "before:moreplanets;" +
-                        "before:exoplanets;" +
-                        "before:asmodeuscore;" +
-                        "before:sol"
+        acceptedMinecraftVersions = "1.12.2",
+        clientSideOnly = true,
+        dependencies = "required-after:galacticraftcore;" +
+                "required-after:galacticraftplanets;" +
+                "required-before:extraplanets;" +
+                "required-before:galaxyspace;" +
+                "before:moreplanets;" +
+                "before:exoplanets;" +
+                "before:sol"
 )
+@SideOnly(Side.CLIENT)
 public class GCC {
-    private static final String name = "GCC Translation Correction Resource Pack";
-    public static        File   ConfigDirectory;
-    public static        Logger logger;
+    private static final String        front                = "gui." + Tags.MOD_ID + ".";
+    @Config.Name("Display GCC Configuration Interface")
+    public static        boolean       displayConfiguration = true;
+    private static       Configuration ac, ep, gsc, gsd, sol;
+
+    @SubscribeEvent
+    public static void onGuiOpen(GuiOpenEvent event) {
+        if (displayConfiguration && event.getGui() instanceof GuiMainMenu) event.setGui(new GuiConfiguration());
+    }
+
+    @SubscribeEvent
+    public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equals(Tags.MOD_ID)) ConfigManager.sync(Tags.MOD_ID, net.minecraftforge.common.config.Config.Type.INSTANCE);
+    }
+
+    private static void setConfigValue(Configuration config, boolean value, String category, String key) {
+        config.load();
+        config.get(category, key, true).set(value);
+        config.save();
+    }
+
+    private static void setConfigValue(Configuration config, boolean value, String category, String... keys) {
+        config.load();
+        for (String key : keys) config.get(category, key, true).set(value);
+        config.save();
+    }
 
     @SideOnly(Side.CLIENT)
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        ConfigDirectory = event.getModConfigurationDirectory();
-        logger = event.getModLog();
-        Constants.init();
-        if (LRM) throw new RuntimeException(I18n.format(front + "error4"));
-        if (PP && GR) throw new RuntimeException(I18n.format(front + "error3"));
-        if (TTS && TTSR) throw new RuntimeException(I18n.format(front + "error2"));
-        if (TTS) logger.info(I18n.format(front + "error1"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, manager -> new RenderTier2Rocket(manager, new ModelTier2Rocket()));
-        if (Config.enableConfiguration && EP) {
-            Configuration config = ep;
-            config.load();
-            if (GS) {
-                config.get("general settings", "Use Custom Galaxy Map/Celestial Selection Screen", true).set(false);
-                config.get("compatibility support", "Enable Galaxy Space Compatibility", false).set(true);
-                config.get("space stations", "Venus SpaceStation", true).set(false);
-                config.get("space stations", "Mars SpaceStation", true).set(false);
-            }
-            if (MP) config.get("compatibility support", "Enable More Planets Compatibility", false).set(true);
-            config.save();
-        }
-        if (EXO) setConfigValue(exo, false, "Core Mod Settings", "warnBetaBuild");
-        if (SOL && (GS || EP)) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
-
-        try (JarFile jarFile = new JarFile(event.getSourceFile())) {
-            extractResourcePack(jarFile);
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-        }
+        File configDirectory = event.getModConfigurationDirectory();
+        ac  = new Configuration(new File(configDirectory, "AsmodeusCore/core.conf"));
+        ep  = new Configuration(new File(configDirectory, "ExtraPlanets.cfg"));
+        gsc = new Configuration(new File(configDirectory, "GalaxySpace/core.conf"));
+        gsd = new Configuration(new File(configDirectory, "GalaxySpace/dimensions.conf"));
+        sol = new Configuration(new File(configDirectory, "sol/sol.conf"));
+        if (displayConfiguration) setConfigValue(ep, false, "space stations", "Venus SpaceStation", "Mars SpaceStation");
+        if (Loader.isModLoaded("exoplanets")) setConfigValue(new Configuration(new File(configDirectory, "Exoplanets/Core.cfg")), false, "Core Mod Settings", "warnBetaBuild");
+        if (Loader.isModLoaded("sol")) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
     }
 
     @Mod.EventHandler
@@ -86,25 +93,162 @@ public class GCC {
         event.registerServerCommand(new CommandOpenConfiguration());
     }
 
-    private void extractResourcePack(JarFile jarFile) throws IOException {
-        String resourcePackPath = "resourcepacks/" + name + "/";
-        File   targetDir        = new File(new File(Minecraft.getMinecraft().gameDir, "resourcepacks"), name);
-        if (jarFile.getJarEntry(resourcePackPath + "pack.mcmeta") == null) targetDir.delete();
-        FileUtils.deleteDirectory(targetDir);
-        targetDir.mkdirs();
-        for (JarEntry entry : jarFile.stream().toArray(JarEntry[]::new))
-            if (entry.getName().startsWith(resourcePackPath)) {
-                String relativePath = entry.getName().substring(resourcePackPath.length());
-                File   targetFile   = new File(targetDir, relativePath);
-                if (entry.isDirectory()) targetFile.mkdirs();
-                else {
-                    try (InputStream is = jarFile.getInputStream(entry);
-                         FileOutputStream fos = new FileOutputStream(targetFile)) {
-                        byte[] buffer = new byte[1024];
-                        int    length;
-                        while ((length = is.read(buffer)) > 0) fos.write(buffer, 0, length);
-                    }
-                }
+    private static class CommandOpenConfiguration extends CommandBase {
+        @Override
+        public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) {
+            Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().displayGuiScreen(new GuiConfiguration()));
+        }
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "gcc";
+        }
+
+        @Nonnull
+        @Override
+        public String getUsage(@Nonnull ICommandSender sender) {
+            return "/gcc";
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static class GuiConfiguration extends GuiScreen {
+        private static String currentScreen        = front + "map";
+        private final  int[]  selectedButtonsIndex = {-1, -1, -1, -1, -1, -1};
+
+        @Override
+        public void initGui() {
+            super.initGui();
+            buttonList.clear();
+            if (!displayConfiguration) Button(100, front + "exit", 45);
+            if (!currentScreen.equals(front + "map")) Button(0, "gui.back", width / 2 - 50);
+            switch (currentScreen) {
+                case front + "map":
+                    Button(0, -30, front + "gc");
+                    Button(1, 0, front + "ac");
+                    Button(2, 30, front + "ep");
+                    break;
+                case front + "ss":
+                    Button(1, -15, front + "gs");
+                    Button(2, 15, front + "ep");
+                    break;
+                case front + "planets":
+                    Button(1, -30, front + "gs");
+                    Button(2, 0, front + "ep");
+                    Button(3, 30, front + "exit");
+                    break;
+                case front + "shaders":
+                case front + "menu":
+                case front + "craft":
+                    Button(1, -15, "gui.yes");
+                    Button(2, 15, "gui.no");
+                    break;
+                case front + "done":
+                    Button(1, (displayConfiguration ? 0 : -15), front + "quit");
+                    if (!displayConfiguration) Button(2, 15, front + "continue");
+                    break;
             }
+        }
+
+        private void Button(int buttonId, int y, String buttonText) {
+            addButton(new GuiButton(buttonId, width / 2 - 50, height / 2 + y, 100, 20, I18n.format(buttonText)));
+        }
+
+        private void Button(int buttonId, String buttonText, int x) {
+            addButton(new GuiButton(buttonId, x, height - 45, 100, 20, I18n.format(buttonText)));
+        }
+
+        @Override
+        protected void actionPerformed(GuiButton button) {
+            if (button.id == 100) {
+                Minecraft.getMinecraft().displayGuiScreen(null);
+                return;
+            }
+            switch (currentScreen) {
+                case front + "map":
+                    currentScreen = front + "ss";
+                    selectedButtonsIndex[0] = button.id;
+                    break;
+                case front + "ss":
+                    ScreenChange(button.id, "map", "planets", 1);
+                    break;
+                case front + "planets":
+                    ScreenChange(button.id, "ss", "shaders", 2);
+                    break;
+                case front + "shaders":
+                    ScreenChange(button.id, "planets", "menu", 3);
+                    break;
+                case front + "menu":
+                    ScreenChange(button.id, "shaders", "craft", 4);
+                    break;
+                case front + "craft":
+                    if (button.id == 0) currentScreen = front + "menu";
+                    else {
+                        currentScreen           = front + "done";
+                        selectedButtonsIndex[5] = button.id;
+                        Modify();
+                    }
+                    break;
+                case front + "done":
+                    switch (button.id) {
+                        case 0:
+                            currentScreen = front + "craft";
+                            break;
+                        case 1:
+                            displayConfiguration = false;
+                            MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(Tags.MOD_ID, Tags.MOD_NAME, false, false));
+                            Minecraft.getMinecraft().shutdown();
+                            break;
+                        case 2:
+                            Minecraft.getMinecraft().displayGuiScreen(null);
+                            break;
+                    }
+                    break;
+            }
+            initGui();
+        }
+
+        @Override
+        public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+            drawDefaultBackground();
+            int w = width / 2, h = height / 2;
+            if (currentScreen.equals(front + "planets")) drawCenteredString(fontRenderer, I18n.format(front + "planets.warning1"), w, h - 65, 0xff0000);
+            if (currentScreen.equals(front + "planets")) drawCenteredString(fontRenderer, I18n.format(front + "planets.warning2"), w, h - 50, 0xff0000);
+            drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 95, 0xffffff);
+            drawCenteredString(fontRenderer, I18n.format(currentScreen), w, h - 80, 0xffffff);
+            super.drawScreen(mouseX, mouseY, partialTicks);
+        }
+
+        private void Modify() {
+            if (Loader.isModLoaded("sol")) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
+            setConfigValue(ac, selectedButtonsIndex[0] == 1, "galaxymap", "enableNewGalaxyMap");
+            setConfigValue(ep, selectedButtonsIndex[0] == 2, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
+            setConfigValue(gsd, selectedButtonsIndex[1] == 1, "general", "enableMarsSpaceStation", "enableVenusSpaceStation");
+            setConfigValue(ep, selectedButtonsIndex[1] == 2, "space stations", "Mars SpaceStation", "Venus SpaceStation");
+            if (selectedButtonsIndex[2] == 1) {
+                //TODO: ERROR
+                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket", "Jupiter & Tier 5 Rocket", "Saturn & Tier 6 Rocket", "Uranus & Tier 7 Rocket", "Neptune & Tier 8 Rocket", "Pluto & Tier 9 Rocket", "Eris & Tier 10 Rocket");
+                setConfigValue(ep, false, "other dimensions", "Triton", "Europa", "IO", "Deimos", "Callisto", "Ganymede", "Rhea", "Titan", "Oberon", "Titania", "Iapetus", "Ceres");
+            } else {
+                setConfigValue(ep, false, "compatibility support", "Enable Galaxy Space Compatibility");
+                setConfigValue(gsd, false, "general", "enableMercury", "enableJupiter", "enableSaturn", "enableUranus", "enableNeptune", "enablePluto", "enableCeres");
+            }
+            setConfigValue(ac, selectedButtonsIndex[3] == 1, "client", "enableSkyAsteroids", "enableSkyMoon", "enableSkyOverworld", "enableSkyOverworldOrbit");
+            setConfigValue(gsc, selectedButtonsIndex[4] == 1, "client", "enableNewMenu");
+            setConfigValue(gsc, selectedButtonsIndex[5] == 1, "hardmode", "enableAdvancedRocketCraft");
+        }
+
+        @Override
+        public void keyTyped(char typedChar, int keyCode) {
+        }
+
+        private void ScreenChange(int id, String last, String next, int index) {
+            if (id == 0) currentScreen = front + last;
+            else {
+                currentScreen               = front + next;
+                selectedButtonsIndex[index] = id;
+            }
+        }
     }
 }

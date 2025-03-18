@@ -1,12 +1,10 @@
 /*
- * Copyright (c) 2025 FuBangkun. All Rights Reserved.
+ * Copyright (c) 2024-2025 FuBangkun. All Rights Reserved.
  */
 
 apply from: 'gradle/scripts/helpers.gradle'
 
 repositories {
-    // Other repositories described by default:
-    // CleanroomMC: https://maven.cleanroommc.com
     exclusiveContent {
         forRepository {
             maven {
@@ -18,18 +16,7 @@ repositories {
             includeGroup 'curse.maven'
         }
     }
-    exclusiveContent {
-        forRepository {
-            maven {
-                name 'Modrinth'
-                url 'https://api.modrinth.com/maven'
-            }
-        }
-        filter {
-            includeGroup 'maven.modrinth'
-        }
-    }
-    mavenLocal() // Must be last for caching to work
+    mavenLocal()
 }
 
 dependencies{
@@ -40,8 +27,6 @@ dependencies{
     implementation("curse.maven:mjrlegendslib-284331:3344068")
     implementation("curse.maven:more-planets-gc-addon-261990:5063201")
     implementation("curse.maven:stevekungs-lib-296019:5064118")
-    implementation("curse.maven:mixin-booter-419286:5906634")
-    implementation("curse.maven:zollern-galaxy-241940:3215921")
-    implementation("curse.maven:mixin-booter-419286:6118480")
+    implementation("curse.maven:mixin-booter-419286:6156863")
     runtimeOnly("curse.maven:jei-238222:5846804")
 }
