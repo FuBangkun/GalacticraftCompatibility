@@ -1,5 +1,7 @@
 gui.galacticraftcompatibility.title=星系附属兼容配置页面
 gui.galacticraftcompatibility.map=请选择你要使用的星图。
+gui.galacticraftcompatibility.map.warning1=ToTheStars重制版不兼容Asmodeus Core的星图，所以禁止选择。
+gui.galacticraftcompatibility.map.warning2=
 gui.galacticraftcompatibility.ss=请选择你要使用的空间站。
 gui.galacticraftcompatibility.planets=侧重于星空还是额外行星？
 gui.galacticraftcompatibility.planets.warning1=尚未解决选择星空开星图崩溃的问题。
