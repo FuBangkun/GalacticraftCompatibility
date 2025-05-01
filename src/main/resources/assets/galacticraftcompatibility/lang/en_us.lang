@@ -1,5 +1,7 @@
 gui.galacticraftcompatibility.title=Galacticraft Addons Compatibility Configuration
-gui.galacticraftcompatibility.map=Please select the Celestial Selection Screen you wish to use.
+gui.galacticraftcompatibility.map=Please select the celestial selection screen you wish to use.
+gui.galacticraftcompatibility.map.warning1=ToTheStarsRemake is incompatible with the cellular celestial screen
+gui.galacticraftcompatibility.map.warning2=of the Asmodeus Core, so selection is prohibited.
 gui.galacticraftcompatibility.ss=Please select the space station you wish to use.
 gui.galacticraftcompatibility.planets=Focus on Galaxy Space or Extra Planets?
 gui.galacticraftcompatibility.planets.warning1=The issue of selecting the Galaxy Space crashes has not been resolved.

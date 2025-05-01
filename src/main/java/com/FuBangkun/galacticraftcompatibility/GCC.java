@@ -127,6 +127,9 @@ public class GCC {
                 case front + "map":
                     Button(0, -30, front + "gc");
                     Button(1, 0, front + "ac");
+                    GuiButton ACButton = new GuiButton(1, width / 2 - 50, height / 2, 100, 20, I18n.format(front + "ac"));
+                    ACButton.enabled = !Loader.isModLoaded("tothestarsremake");
+                    addButton(ACButton);
                     Button(2, 30, front + "ep");
                     break;
                 case front + "ss":
@@ -167,8 +170,13 @@ public class GCC {
             }
             switch (currentScreen) {
                 case front + "map":
-                    currentScreen = front + "ss";
-                    selectedButtonsIndex[0] = button.id;
+                    if (button.id != 1) {
+                        currentScreen           = front + "ss";
+                        selectedButtonsIndex[0] = button.id;
+                    } else if (!Loader.isModLoaded("tothestarsremake")) {
+                        currentScreen           = front + "ss";
+                        selectedButtonsIndex[0] = button.id;
+                    }
                     break;
                 case front + "ss":
                     ScreenChange(button.id, "map", "planets", 1);
@@ -213,6 +221,8 @@ public class GCC {
         public void drawScreen(int mouseX, int mouseY, float partialTicks) {
             drawDefaultBackground();
             int w = width / 2, h = height / 2;
+            if (currentScreen.equals(front + "map") && Loader.isModLoaded("tothestarsremake")) drawCenteredString(fontRenderer, I18n.format(front + "map.warning1"), w, h - 65, 0xff0000);
+            if (currentScreen.equals(front + "map") && Loader.isModLoaded("tothestarsremake")) drawCenteredString(fontRenderer, I18n.format(front + "map.warning2"), w, h - 50, 0xff0000);
             if (currentScreen.equals(front + "planets")) drawCenteredString(fontRenderer, I18n.format(front + "planets.warning1"), w, h - 65, 0xff0000);
             if (currentScreen.equals(front + "planets")) drawCenteredString(fontRenderer, I18n.format(front + "planets.warning2"), w, h - 50, 0xff0000);
             drawCenteredString(fontRenderer, I18n.format(front + "title"), w, h - 95, 0xffffff);
