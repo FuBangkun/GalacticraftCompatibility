@@ -36,7 +36,6 @@ import java.io.File;
         name = Tags.MOD_NAME,
         version = Tags.VERSION,
         acceptedMinecraftVersions = "1.12.2",
-        clientSideOnly = true,
         dependencies = "required-after:galacticraftcore;" +
                 "required-after:galacticraftplanets;" +
                 "required-before:extraplanets;" +
@@ -45,7 +44,6 @@ import java.io.File;
                 "before:exoplanets;" +
                 "before:sol"
 )
-@SideOnly(Side.CLIENT)
 public class GCC {
     private static final String        front                = "gui." + Tags.MOD_ID + ".";
     @Config.Name("Display GCC Configuration Interface")
@@ -53,6 +51,7 @@ public class GCC {
     private static       Configuration ac, ep, gsc, gsd, sol;
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void onGuiOpen(GuiOpenEvent event) {
         if (displayConfiguration && event.getGui() instanceof GuiMainMenu) event.setGui(new GuiConfiguration());
     }
@@ -74,7 +73,6 @@ public class GCC {
         config.save();
     }
 
-    @SideOnly(Side.CLIENT)
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         File configDirectory = event.getModConfigurationDirectory();
@@ -90,13 +88,18 @@ public class GCC {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandOpenConfiguration());
+        if (event.getSide() == Side.CLIENT) {
+            event.registerServerCommand(new CommandOpenConfiguration());
+        }
     }
 
+    @SideOnly(Side.CLIENT)
     private static class CommandOpenConfiguration extends CommandBase {
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) {
-            Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().displayGuiScreen(new GuiConfiguration()));
+            if (sender.getEntityWorld().isRemote) {
+                Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().displayGuiScreen(new GuiConfiguration()));
+            }
         }
 
         @Nonnull
@@ -123,13 +126,14 @@ public class GCC {
             buttonList.clear();
             if (!displayConfiguration) Button(100, front + "exit", 45);
             if (!currentScreen.equals(front + "map")) Button(0, "gui.back", width / 2 - 50);
+            GuiButton button;
             switch (currentScreen) {
                 case front + "map":
                     Button(0, -30, front + "gc");
                     Button(1, 0, front + "ac");
-                    GuiButton ACButton = new GuiButton(1, width / 2 - 50, height / 2, 100, 20, I18n.format(front + "ac"));
-                    ACButton.enabled = !Loader.isModLoaded("tothestarsremake");
-                    addButton(ACButton);
+                    button = new GuiButton(1, width / 2 - 50, height / 2, 100, 20, I18n.format(front + "ac"));
+                    button.enabled = !Loader.isModLoaded("tothestarsremake");
+                    addButton(button);
                     Button(2, 30, front + "ep");
                     break;
                 case front + "ss":
@@ -137,7 +141,9 @@ public class GCC {
                     Button(2, 15, front + "ep");
                     break;
                 case front + "planets":
-                    Button(1, -30, front + "gs");
+                    button = new GuiButton(1, width / 2 - 50, height / 2 - 30, 100, 20, I18n.format(front + "gs"));
+                    button.enabled = false;
+                    addButton(button);
                     Button(2, 0, front + "ep");
                     Button(3, 30, front + "exit");
                     break;
@@ -230,6 +236,7 @@ public class GCC {
             super.drawScreen(mouseX, mouseY, partialTicks);
         }
 
+        @SideOnly(Side.CLIENT)
         private void Modify() {
             if (Loader.isModLoaded("sol")) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
             setConfigValue(ac, selectedButtonsIndex[0] == 1, "galaxymap", "enableNewGalaxyMap");
