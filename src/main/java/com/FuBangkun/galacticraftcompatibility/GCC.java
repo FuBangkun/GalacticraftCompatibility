@@ -2,7 +2,7 @@
  * Copyright (c) 2024-2025 FuBangkun. All Rights Reserved.
  */
 
-package com.FuBangkun.galacticraftcompatibility;
+package com.fubangkun.galacticraftcompatibility;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -29,6 +29,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.io.File;
 
+/**
+ * @author FuBangkun
+ */
 @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
 @Config(modid = Tags.MOD_ID)
 @Mod(
