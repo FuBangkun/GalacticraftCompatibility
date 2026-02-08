@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2024-2025 FuBangkun. All Rights Reserved.
- */
-
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.runtime.MethodClosure
 
@@ -89,7 +85,7 @@ void setDefaultProperty(String propertyName, boolean warn, defaultValue) {
     }
 }
 
-static void assertEnvironmentVariable(String propertyName) {
+void assertEnvironmentVariable(String propertyName) {
     def property = System.getenv(propertyName)
     if (property == null) {
         throw new GradleException("System Environment Variable $propertyName is not defined!")
