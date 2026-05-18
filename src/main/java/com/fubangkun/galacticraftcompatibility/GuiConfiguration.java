@@ -6,7 +6,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Loader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -17,14 +19,15 @@ public class GuiConfiguration extends GuiScreen {
     private static final int BTN_MAP_GC = 1;
     private static final int BTN_MAP_AC = 2;
     private static final int BTN_MAP_EP = 3;
-    private static final int BTN_SS_GS = 4;
-    private static final int BTN_SS_EP = 5;
-    private static final int BTN_PLANETS_GS = 6;
-    private static final int BTN_PLANETS_EP = 7;
-    private static final int BTN_YES = 8;
-    private static final int BTN_NO = 9;
-    private static final int BTN_QUIT = 10;
-    private static final int BTN_CONTINUE = 11;
+    private static final int BTN_MAP_SOL = 4;
+    private static final int BTN_SS_GS = 5;
+    private static final int BTN_SS_EP = 6;
+    private static final int BTN_PLANETS_GS = 7;
+    private static final int BTN_PLANETS_EP = 8;
+    private static final int BTN_YES = 9;
+    private static final int BTN_NO = 10;
+    private static final int BTN_QUIT = 11;
+    private static final int BTN_CONTINUE = 12;
     private int pendingButtonId = -1;
     private final UserSelections userSelections = new UserSelections();
     private ScreenState currentScreen = ScreenState.MAP_SELECTION;
@@ -82,13 +85,30 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private void createMapSelectionButtons(int centerX, int centerY) {
-        addButton(new GuiButton(BTN_MAP_GC, centerX - 50, centerY - 30, 100, 20, I18n.format(front + "gc")));
-
-        GuiButton acButton = new GuiButton(BTN_MAP_AC, centerX - 50, centerY, 100, 20, I18n.format(front + "ac"));
+        List<GuiButton> buttons = new ArrayList<>();
+        
+        buttons.add(new GuiButton(BTN_MAP_GC, 0, 0, 100, 20, I18n.format(front + "gc")));
+        
+        GuiButton acButton = new GuiButton(BTN_MAP_AC, 0, 0, 100, 20, I18n.format(front + "ac"));
         acButton.enabled = !GCC.isTTSLoaded;
-        addButton(acButton);
+        buttons.add(acButton);
+        
+        buttons.add(new GuiButton(BTN_MAP_EP, 0, 0, 100, 20, I18n.format(front + "ep")));
+        
+        if (GCC.isSolLoaded) {
+            buttons.add(new GuiButton(BTN_MAP_SOL, 0, 0, 100, 20, I18n.format(front + "sol")));
+        }
+        
+        int spacing = 30;
+        int totalHeight = (buttons.size() - 1) * spacing;
+        int startOffset = -totalHeight / 2;
 
-        addButton(new GuiButton(BTN_MAP_EP, centerX - 50, centerY + 30, 100, 20, I18n.format(front + "ep")));
+        for (int i = 0; i < buttons.size(); i++) {
+            GuiButton b = buttons.get(i);
+            b.x = centerX - 50;
+            b.y = centerY + startOffset + i * spacing;
+            addButton(b);
+        }
     }
 
     private void createSpaceStationSelectionButtons(int centerX, int centerY) {
@@ -195,14 +215,21 @@ public class GuiConfiguration extends GuiScreen {
 
             case BTN_MAP_AC:
                 if (!GCC.isTTSLoaded) {
-                    userSelections.mapSelection = MapSelection.ADVANCED_ROCKETRY;
+                    userSelections.mapSelection = MapSelection.ASMODEUS_CORE;
                     navigateTo(ScreenState.SPACE_STATION_SELECTION);
                 }
                 break;
-
+                
             case BTN_MAP_EP:
                 userSelections.mapSelection = MapSelection.EXTRAPLANETS;
                 navigateTo(ScreenState.SPACE_STATION_SELECTION);
+                break;
+                
+            case BTN_MAP_SOL:
+                if (GCC.isSolLoaded) {
+                    userSelections.mapSelection = MapSelection.SOL;
+                    navigateTo(ScreenState.SPACE_STATION_SELECTION);
+                }
                 break;
         }
     }
@@ -266,7 +293,6 @@ public class GuiConfiguration extends GuiScreen {
     private void handleCompletion(GuiButton button) {
         switch (button.id) {
             case BTN_QUIT:
-                Minecraft.getMinecraft().displayGuiScreen(null);
                 GCCConfig.displayConfiguration = false;
                 MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(Tags.MOD_ID, Tags.MOD_NAME, false, false));
                 Minecraft.getMinecraft().shutdown();
@@ -309,12 +335,12 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private void applyConfiguration() {
-        if (Loader.isModLoaded("sol")) {
-            GCC.setConfigValue(GCC.sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
-        }
-
-        GCC.setConfigValue(GCC.ac, userSelections.mapSelection == MapSelection.ADVANCED_ROCKETRY, "galaxymap", "enableNewGalaxyMap");
+        GCC.setConfigValue(GCC.ac, userSelections.mapSelection == MapSelection.ASMODEUS_CORE, "galaxymap", "enableNewGalaxyMap");
         GCC.setConfigValue(GCC.ep, userSelections.mapSelection == MapSelection.EXTRAPLANETS, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
+
+        if (GCC.isSolLoaded) {
+            GCC.setConfigValue(GCC.sol, userSelections.mapSelection == MapSelection.SOL, "the sol - misc", "Enable Custom Galaxymap?");
+        }
 
         GCC.setConfigValue(GCC.gsd, userSelections.spaceStationSelection == SpaceStationSelection.GALAXYSPACE, "general", "enableMarsSpaceStation", "enableVenusSpaceStation");
         GCC.setConfigValue(GCC.ep, userSelections.spaceStationSelection == SpaceStationSelection.EXTRAPLANETS, "space stations", "Mars SpaceStation", "Venus SpaceStation");
@@ -407,7 +433,7 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private enum MapSelection {
-        NONE, GALACTICRAFT, ADVANCED_ROCKETRY, EXTRAPLANETS
+        NONE, GALACTICRAFT, ASMODEUS_CORE, EXTRAPLANETS, SOL
     }
 
     private enum SpaceStationSelection {

@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.2] - 2026-05-19
+
+### Added
+- Added UI option for The Sol map selection (only shown when the 'sol' mod is installed).
+
+### Changed
+- Use dynamic layout for map selection buttons so they remain vertically centered regardless of which buttons are visible.
+- Update build toolchain.
+- Added compatibility with ToTheStars and removed compatibility with ToTheStarsRemake.
+
+### Fixed
+- Prevent the configuration GUI from reopening briefly when choosing Quit by suppressing automatic GUI open during the shutdown sequence.
+
 ## [1.1.1] - 2026-02-09
 
 ### Fixed

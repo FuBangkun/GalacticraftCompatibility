@@ -35,6 +35,7 @@ import java.io.File;
 public class GCC {
     public static Configuration ac, ep, gsc, gsd, sol;
     public static boolean isTTSLoaded;
+    public static boolean isSolLoaded;
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -67,10 +68,11 @@ public class GCC {
         gsc = new Configuration(new File(configDirectory, "GalaxySpace/core.conf"));
         gsd = new Configuration(new File(configDirectory, "GalaxySpace/dimensions.conf"));
         sol = new Configuration(new File(configDirectory, "sol/sol.conf"));
+        isTTSLoaded = Loader.isModLoaded("tothestars");
+        isSolLoaded = Loader.isModLoaded("sol");
         if (GCCConfig.displayConfiguration) setConfigValue(ep, false, "space stations", "Venus SpaceStation", "Mars SpaceStation");
         if (Loader.isModLoaded("exoplanets")) setConfigValue(new Configuration(new File(configDirectory, "Exoplanets/Core.cfg")), false, "Core Mod Settings", "warnBetaBuild");
-        if (Loader.isModLoaded("sol")) setConfigValue(sol, false, "The Sol - Misc", "Enable Custom Galaxymap?");
-        isTTSLoaded = Loader.isModLoaded("tothestarsremake") || Loader.isModLoaded("tothestars");
+        if (GCCConfig.displayConfiguration && isSolLoaded) setConfigValue(sol, false, "the sol - misc", "Enable Custom Galaxymap?");
     }
 
     @SideOnly(Side.CLIENT)

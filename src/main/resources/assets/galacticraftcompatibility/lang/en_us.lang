@@ -1,7 +1,7 @@
 gui.galacticraftcompatibility.title=Galacticraft Addons Compatibility Configuration
 gui.galacticraftcompatibility.map=Select the celestial selection screen you wish to use.
-gui.galacticraftcompatibility.map.warning1=ToTheStarsRemake is incompatible with the cellular celestial screen
-gui.galacticraftcompatibility.map.warning2=of the Asmodeus Core, so selection is prohibited.
+gui.galacticraftcompatibility.map.warning1=ToTheStars is incompatible with the cellular celestial screen of the Asmodeus Core,
+gui.galacticraftcompatibility.map.warning2=so selection is prohibited. But you can try using ToTheStarsRemake, which fixes this error.
 gui.galacticraftcompatibility.ss=Select the space station you wish to use.
 gui.galacticraftcompatibility.duplicate=Do you want to delete duplicate planets?
 gui.galacticraftcompatibility.duplicate.warning=All items related to that planet may be deleted.
@@ -19,3 +19,4 @@ gui.galacticraftcompatibility.gc=Galacticraft
 gui.galacticraftcompatibility.gs=Galaxy Space
 gui.galacticraftcompatibility.ac=Asmodeus Core
 gui.galacticraftcompatibility.ep=Extra Planets
+gui.galacticraftcompatibility.sol=The Sol

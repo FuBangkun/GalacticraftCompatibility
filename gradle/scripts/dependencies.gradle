@@ -66,13 +66,14 @@ dependencies {
     //     transitive = false
     // }
 
-    implementation("curse.maven:galacticraft-legacy-564236:4671122")
+    implementation("curse.maven:galacticraft-legacy-564236:6364107")
     implementation("curse.maven:galaxy-space-addon-for-galacticraft-238770:7005609")
     implementation("curse.maven:asmodeuscore-303101:7180991")
     implementation("curse.maven:extraplanets-241291:5339029")
     implementation("curse.maven:mjrlegendslib-284331:3344068")
-    implementation("curse.maven:more-planets-gc-addon-261990:5063201")
-    implementation("curse.maven:stevekungs-lib-296019:5064118")
-    implementation("curse.maven:mixin-booter-419286:7049694")
+    implementation("curse.maven:more-planets-gc-addon-261990:7163195")
+    implementation("curse.maven:stevekungs-lib-296019:6773847")
+    implementation("curse.maven:the-sol-510045:3424980")
+    runtimeOnly("curse.maven:mixin-booter-419286:7049694")
     runtimeOnly("curse.maven:jei-238222:5846804")
 }
