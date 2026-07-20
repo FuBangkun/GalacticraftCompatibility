@@ -4,17 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.common.config.ConfigManager;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 public class GuiConfiguration extends GuiScreen {
     private static final String front = "gui." + Tags.MOD_ID + ".";
-    private static final int BTN_CANCEL = 1000;
     private static final int BTN_BACK = 1001;
     private static final int BTN_MAP_GC = 1;
     private static final int BTN_MAP_AC = 2;
@@ -27,9 +24,8 @@ public class GuiConfiguration extends GuiScreen {
     private static final int BTN_YES = 9;
     private static final int BTN_NO = 10;
     private static final int BTN_QUIT = 11;
-    private static final int BTN_CONTINUE = 12;
-    private int pendingButtonId = -1;
     private final UserSelections userSelections = new UserSelections();
+    private int pendingButtonId = -1;
     private ScreenState currentScreen = ScreenState.MAP_SELECTION;
 
     @Override
@@ -42,10 +38,6 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private void createCommonButtons() {
-        if (!GCCConfig.displayConfiguration) {
-            addButton(new GuiButton(BTN_CANCEL, 45, height - 45, 100, 20, I18n.format(front + "cancel")));
-        }
-
         if (currentScreen != ScreenState.MAP_SELECTION) {
             addButton(new GuiButton(BTN_BACK, width / 2 - 50, height - 45, 100, 20, I18n.format("gui.back")));
         }
@@ -86,19 +78,19 @@ public class GuiConfiguration extends GuiScreen {
 
     private void createMapSelectionButtons(int centerX, int centerY) {
         List<GuiButton> buttons = new ArrayList<>();
-        
+
         buttons.add(new GuiButton(BTN_MAP_GC, 0, 0, 100, 20, I18n.format(front + "gc")));
-        
+
         GuiButton acButton = new GuiButton(BTN_MAP_AC, 0, 0, 100, 20, I18n.format(front + "ac"));
         acButton.enabled = !GCC.isTTSLoaded;
         buttons.add(acButton);
-        
+
         buttons.add(new GuiButton(BTN_MAP_EP, 0, 0, 100, 20, I18n.format(front + "ep")));
-        
+
         if (GCC.isSolLoaded) {
             buttons.add(new GuiButton(BTN_MAP_SOL, 0, 0, 100, 20, I18n.format(front + "sol")));
         }
-        
+
         int spacing = 30;
         int totalHeight = (buttons.size() - 1) * spacing;
         int startOffset = -totalHeight / 2;
@@ -132,10 +124,7 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private void createCompletionButtons(int centerX, int centerY) {
-        addButton(new GuiButton(BTN_QUIT, centerX - 50, centerY + (GCCConfig.displayConfiguration ? 0 : -15), 100, 20, I18n.format(front + "quit")));
-        if (!GCCConfig.displayConfiguration) {
-            addButton(new GuiButton(BTN_CONTINUE, centerX - 50, centerY + 15, 100, 20, I18n.format(front + "continue")));
-        }
+        addButton(new GuiButton(BTN_QUIT, centerX - 50, centerY, 100, 20, I18n.format(front + "quit")));
     }
 
     @Override
@@ -157,15 +146,10 @@ public class GuiConfiguration extends GuiScreen {
     }
 
     private boolean handleCommonButtons(GuiButton button) {
-        switch (button.id) {
-            case BTN_CANCEL:
-                Minecraft.getMinecraft().displayGuiScreen(null);
-                return true;
-
-            case BTN_BACK:
-                navigateBack();
-                initGui();
-                return true;
+        if (button.id == BTN_BACK) {
+            navigateBack();
+            initGui();
+            return true;
         }
         return false;
     }
@@ -219,12 +203,12 @@ public class GuiConfiguration extends GuiScreen {
                     navigateTo(ScreenState.SPACE_STATION_SELECTION);
                 }
                 break;
-                
+
             case BTN_MAP_EP:
                 userSelections.mapSelection = MapSelection.EXTRAPLANETS;
                 navigateTo(ScreenState.SPACE_STATION_SELECTION);
                 break;
-                
+
             case BTN_MAP_SOL:
                 if (GCC.isSolLoaded) {
                     userSelections.mapSelection = MapSelection.SOL;
@@ -286,22 +270,28 @@ public class GuiConfiguration extends GuiScreen {
 
     private void handleCraftSelection(GuiButton button) {
         userSelections.enableAdvancedCraft = (button.id == BTN_YES);
-        applyConfiguration();
         navigateTo(ScreenState.COMPLETION);
     }
 
     private void handleCompletion(GuiButton button) {
-        switch (button.id) {
-            case BTN_QUIT:
-                GCCConfig.displayConfiguration = false;
-                MinecraftForge.EVENT_BUS.post(new ConfigChangedEvent.OnConfigChangedEvent(Tags.MOD_ID, Tags.MOD_NAME, false, false));
-                Minecraft.getMinecraft().shutdown();
-                break;
-
-            case BTN_CONTINUE:
-                Minecraft.getMinecraft().displayGuiScreen(null);
-                break;
+        if (button.id == BTN_QUIT) {
+            saveToGCCConfig();
+            Minecraft.getMinecraft().shutdown();
         }
+    }
+
+    private void saveToGCCConfig() {
+        GCCConfig.mapSelection = userSelections.mapSelection.ordinal() - 1;
+        GCCConfig.spaceStationSelection = userSelections.spaceStationSelection.ordinal() - 1;
+        GCCConfig.removeDuplicatePlanets = (userSelections.duplicateSelection == DuplicateSelection.YES);
+        GCCConfig.preferredPlanetMod = Math.max(0, userSelections.planetsSelection.ordinal() - 1);
+        GCCConfig.enableShaders = userSelections.enableShaders;
+        GCCConfig.enableNewMenu = userSelections.enableNewMenu;
+        GCCConfig.enableAdvancedCraft = userSelections.enableAdvancedCraft;
+        GCCConfig.firstLaunch = false;
+        GCCConfig.applyNextLaunch = true;
+
+        ConfigManager.sync(Tags.MOD_ID, net.minecraftforge.common.config.Config.Type.INSTANCE);
     }
 
     private void navigateTo(ScreenState nextScreen) {
@@ -332,34 +322,6 @@ public class GuiConfiguration extends GuiScreen {
                 currentScreen = ScreenState.CRAFT_SELECTION;
                 break;
         }
-    }
-
-    private void applyConfiguration() {
-        GCC.setConfigValue(GCC.ac, userSelections.mapSelection == MapSelection.ASMODEUS_CORE, "galaxymap", "enableNewGalaxyMap");
-        GCC.setConfigValue(GCC.ep, userSelections.mapSelection == MapSelection.EXTRAPLANETS, "general settings", "Use Custom Galaxy Map/Celestial Selection Screen");
-
-        if (GCC.isSolLoaded) {
-            GCC.setConfigValue(GCC.sol, userSelections.mapSelection == MapSelection.SOL, "the sol - misc", "Enable Custom Galaxymap?");
-        }
-
-        GCC.setConfigValue(GCC.gsd, userSelections.spaceStationSelection == SpaceStationSelection.GALAXYSPACE, "general", "enableMarsSpaceStation", "enableVenusSpaceStation");
-        GCC.setConfigValue(GCC.ep, userSelections.spaceStationSelection == SpaceStationSelection.EXTRAPLANETS, "space stations", "Mars SpaceStation", "Venus SpaceStation");
-
-        GCC.setConfigValue(GCC.ep, true, "compatibility support", "Enable Galaxy Space Compatibility");
-        if (userSelections.duplicateSelection == DuplicateSelection.YES) {
-            GCC.setConfigValue(GCC.ep, false, "compatibility support", "Enable Galaxy Space Compatibility");
-            if (userSelections.planetsSelection == PlanetsSelection.GALAXYSPACE) {
-                GCC.setConfigValue(GCC.ep, false, "main dimensions", "Mercury & Tier 4 Rocket", "Jupiter & Tier 5 Rocket", "Saturn & Tier 6 Rocket", "Uranus & Tier 7 Rocket", "Neptune & Tier 8 Rocket", "Pluto & Tier 9 Rocket", "Eris & Tier 10 Rocket");
-                GCC.setConfigValue(GCC.ep, false, "other dimensions", "Triton", "Europa", "IO", "Deimos", "Callisto", "Ganymede", "Rhea", "Titan", "Oberon", "Titania", "Iapetus", "Ceres", "Kuiper Belt", "Unreachable moons on the Celestial Selection Screen");
-            } else if (userSelections.planetsSelection == PlanetsSelection.EXTRAPLANETS) {
-                GCC.setConfigValue(GCC.gsd, false, "general", "enableMercury", "enableJupiter", "enableSaturn", "enableUranus", "enablePluto", "enableCeres", "enableKuiperBelt");
-                //GCC.setConfigValue(GCC.gsd, false, "enableNeptune"); //Galaxy Space's bug
-            }
-        }
-
-        GCC.setConfigValue(GCC.ac, userSelections.enableShaders, "client", "enableSkyAsteroids", "enableSkyMoon", "enableSkyOverworld", "enableSkyOverworldOrbit");
-        GCC.setConfigValue(GCC.gsc, userSelections.enableNewMenu, "client", "enableNewMenu");
-        GCC.setConfigValue(GCC.gsc, userSelections.enableAdvancedCraft, "hardmode", "enableAdvancedRocketCraft");
     }
 
     @Override
@@ -416,9 +378,6 @@ public class GuiConfiguration extends GuiScreen {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
-        if (keyCode == 1 && !GCCConfig.displayConfiguration) {
-            Minecraft.getMinecraft().displayGuiScreen(null);
-        }
     }
 
     private enum ScreenState {

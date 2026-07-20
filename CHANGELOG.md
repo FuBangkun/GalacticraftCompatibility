@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.3] - 2026-07-20
+
+### Added
+- Added server-client configuration consistency check. If a client's config does not match the server, the player will be disconnected with a detailed mismatch report.
+
+### Changed
+- Refactored configuration system to use Forge Config annotations. Settings are now saved to config and applied on next launch instead of being applied immediately.
+- Improved localizations.
+
+### Removed
+- Removed `/gcc` command.
+
 ## [1.1.2] - 2026-05-19
 
 ### Added

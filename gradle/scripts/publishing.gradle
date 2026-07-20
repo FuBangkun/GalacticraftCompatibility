@@ -63,6 +63,11 @@ if (propertyBool('publish_to_curseforge')) {
                         requiredDependency 'assetmover'
                     }
                 }
+                relations {
+                    requiredDependency 'galacticraft-legacy'
+                    requiredDependency 'galaxy-space-addon-for-galacticraft'
+                    requiredDependency 'extraplanets'
+                }
             }
             options {
                 debug = propertyBool('curseforge_debug')
@@ -94,6 +99,9 @@ if (propertyBool('publish_to_modrinth')) {
                 if (propertyBool('use_asset_mover')) {
                     required.project 'assetmover'
                 }
+                required.project 'galacticraft-legacy'
+                required.project 'galaxy-space'
+                required.project 'extraplanets'
             }
         }
         if (propertyBool('publish_with_changelog')) {
