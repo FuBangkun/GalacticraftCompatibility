@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.4] - 2026-08-11
+
+### Fixed
+- Fixed `Which mod's planets should be kept?`.
+
 ## [1.1.3] - 2026-07-20
 
 ### Added

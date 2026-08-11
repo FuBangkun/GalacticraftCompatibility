@@ -65,11 +65,11 @@ public class GCC {
         if (removeDuplicatePlanets) {
             setConfigValue(ep, false, "compatibility support", "Enable Galaxy Space Compatibility");
             if (preferredPlanetMod == 0) {
-                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket", "Jupiter & Tier 5 Rocket", "Saturn & Tier 6 Rocket", "Uranus & Tier 7 Rocket", "Neptune & Tier 8 Rocket", "Pluto & Tier 9 Rocket", "Eris & Tier 10 Rocket");
-                setConfigValue(ep, false, "other dimensions", "Triton", "Europa", "IO", "Deimos", "Callisto", "Ganymede", "Rhea", "Titan", "Oberon", "Titania", "Iapetus", "Ceres", "Kuiper Belt", "Unreachable moons on the Celestial Selection Screen");
-            } else if (preferredPlanetMod == 1) {
                 setConfigValue(gsd, false, "general", "enableMercury", "enableJupiter", "enableSaturn", "enableUranus", "enablePluto", "enableCeres", "enableKuiperBelt");
                 // setConfigValue(gsd, false, "enableNeptune"); //Galaxy Space's bug
+            } else if (preferredPlanetMod == 1) {
+                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket", "Jupiter & Tier 5 Rocket", "Saturn & Tier 6 Rocket", "Uranus & Tier 7 Rocket", "Neptune & Tier 8 Rocket", "Pluto & Tier 9 Rocket", "Eris & Tier 10 Rocket");
+                setConfigValue(ep, false, "other dimensions", "Triton", "Europa", "IO", "Deimos", "Callisto", "Ganymede", "Rhea", "Titan", "Oberon", "Titania", "Iapetus", "Ceres", "Kuiper Belt", "Unreachable moons on the Celestial Selection Screen");
             }
         }
 
