@@ -40,6 +40,10 @@ When you launch the game for the first time with GCC installed, a configuration 
 
 GalaxySpace, AsmodeusCore, ExtraPlanets and TheSol.
 
+### Copyright
+
+Contact/DMCA: fubangkun2333@outlook.com
+
 ---
 
 ## 中文
@@ -62,3 +66,7 @@ GalacticraftCompatibility（简称 GCC）是一个适用于 **Minecraft 1.12.2 F
 ### 支持的模组
 
 星空、 AsmodeusCore、额外行星、太阳系。
+
+### 版权
+
+Contact/DMCA: fubangkun2333@outlook.com
