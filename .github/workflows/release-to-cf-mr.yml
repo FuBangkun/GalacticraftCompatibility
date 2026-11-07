@@ -47,13 +47,34 @@ jobs:
         with:
           # Only include this section if you wish to publish
           # your assets on Modrinth.
-          modrinth-id: placeholder
+          modrinth-id: cgyFUPN0
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
-          curseforge-id: placeholder
+          curseforge-id: 1188291
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          curseforge-dependencies: |
+            564236(required)
+            303101(required)
+            419286(required)
+            238770(optional)
+            241291(optional)
+            510045(optional)
+            261990(optional)
+            358968(optional)
+            822103(optional)
+            287275(optional)
+
+          modrinth-dependencies: |
+            ZnmdXAk2(required)
+            QMiSyFG6(required)
+            G1ckZuWK(required)
+            76JhFPpa(optional)
+            nGvZ5IQ8(optional)
+            fogahytq(optional)
+            xVzIiQ35(optional)
 
           files: |
             release-assets/${{ steps.release.outputs.primary }}
