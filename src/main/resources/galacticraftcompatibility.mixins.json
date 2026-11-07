@@ -1,0 +1,37 @@
+{
+  "package": "com.fubangkun.galacticraftcompatibility.mixin",
+  "plugin": "com.fubangkun.galacticraftcompatibility.mixin.GCCMixinConfigPlugin",
+  "refmap": "galacticraftcompatibility.refmap.json",
+  "required": true,
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8.7",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "asmodeuscore.AsmodeusConfigMixin",
+    "galacticraftcore.CelestialBodyMixin",
+    "galacticraftcore.CelestialListMixin",
+    "galacticraftcore.PacketSimpleMixin",
+    "extraplanets.ConfigMixin",
+    "extraplanets.MainHandlerServerMixin",
+    "forge.ModSorterMixin",
+    "galaxyspace.GSConfigCoreMixin",
+    "galaxyspace.GSConfigDimensionsMixin",
+    "galaxyspace.GSEventHandlerMixin",
+    "sol.ConfigManagerSolMixin",
+    "sol.RegistryHandlerMixin",
+    "sol.TheSolMixin"
+  ],
+  "server": [],
+  "client": [
+    "asmodeuscore.NewGuiCelestialSelectionMixin",
+    "extraplanets.MainHandlerClientMixin",
+    "galacticraftcore.GuiCelestialSelectionMixin",
+    "galacticraftcore.WorldUtilClientMixin",
+    "galacticresearch.GRGuiCelestialSelectionGalaxySpaceMixin",
+    "vanilla.RenderGlobalMixin"
+  ],
+  "setSourceFile": true
+}

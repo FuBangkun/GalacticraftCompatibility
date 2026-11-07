@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation 'mezz:jei:4.35.0'
+    modImplementation 'mezz:jei:4.36.1'
 
     // Example - Dependency descriptor:
     // 'com.google.code.gson:gson:2.8.6' << group: com.google.code.gson, name:gson, version:2.8.6
@@ -78,16 +78,17 @@ dependencies {
     //     transitive = false
     // }
 
-    modImplementation("curse.maven:galacticraft-legacy-564236:6364107")
-    modImplementation("curse.maven:galaxy-space-addon-for-galacticraft-238770:7005609")
-    modImplementation("curse.maven:asmodeuscore-303101:7180991")
-    modImplementation("curse.maven:extraplanets-241291:5339029")
-    modRuntimeOnly("curse.maven:mjrlegendslib-284331:3344068")
-    modRuntimeOnly("curse.maven:more-planets-gc-addon-261990:7163195")
-    modRuntimeOnly("curse.maven:stevekungs-lib-296019:6773847")
-    modRuntimeOnly("curse.maven:the-sol-510045:3424980")
-    modRuntimeOnly("curse.maven:mixin-booter-419286:7049694")
-    modRuntimeOnly("curse.maven:jei-238222:5846804")
+    modImplementation 'curse.maven:galacticraft-legacy-564236:6364107'
+    modImplementation 'curse.maven:asmodeuscore-303101:7180991'
+    modImplementation 'curse.maven:galaxy-space-addon-for-galacticraft-238770:7005609'
+    modImplementation 'curse.maven:mjrlegendslib-284331:3344068'
+    modImplementation 'curse.maven:extraplanets-241291:5339029'
+    modImplementation 'curse.maven:stevekung-lib-296019:6773847'
+    modImplementation 'curse.maven:more-planets-gc-addon-261990:7163195'
+    modImplementation 'curse.maven:the-sol-510045:3424980'
+    modImplementation 'curse.maven:interstellar-exoplanets-358968:4066266'
+    modImplementation 'curse.maven:galactic-research-822103:5369512'
+    modCompileOnly 'curse.maven:planet-progression-287275:4000252'
 }
 
 if (propertyBool('enable_shadow')) {
