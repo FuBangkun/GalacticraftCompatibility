@@ -12,9 +12,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 @Mod(
-        modid = Tags.MOD_ID,
-        name = Tags.MOD_NAME,
-        version = Tags.VERSION,
+        modid = Reference.MOD_ID,
+        name = Reference.MOD_NAME,
+        version = Reference.VERSION,
         acceptedMinecraftVersions = "[1.12.2]",
         dependencies = "required-after:galacticraftcore;" +
                 "required-after:galacticraftplanets;" +
@@ -28,7 +28,7 @@ public class GCC {
     public static Configuration ac, ep, gsc, gsd, sol, gcc;
     public static boolean isTTSLoaded;
     public static boolean isSolLoaded;
-    public static Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
+    public static Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 
     private static void setConfigValue(Configuration config, boolean value, String category, String key) {
         if (config == null) {
@@ -65,11 +65,11 @@ public class GCC {
         if (removeDuplicatePlanets) {
             setConfigValue(ep, false, "compatibility support", "Enable Galaxy Space Compatibility");
             if (preferredPlanetMod == 0) {
-                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket", "Jupiter & Tier 5 Rocket", "Saturn & Tier 6 Rocket", "Uranus & Tier 7 Rocket", "Neptune & Tier 8 Rocket", "Pluto & Tier 9 Rocket", "Eris & Tier 10 Rocket");
-                setConfigValue(ep, false, "other dimensions", "Triton", "Europa", "IO", "Deimos", "Callisto", "Ganymede", "Rhea", "Titan", "Oberon", "Titania", "Iapetus", "Ceres", "Kuiper Belt", "Unreachable moons on the Celestial Selection Screen");
-            } else if (preferredPlanetMod == 1) {
                 setConfigValue(gsd, false, "general", "enableMercury", "enableJupiter", "enableSaturn", "enableUranus", "enablePluto", "enableCeres", "enableKuiperBelt");
                 // setConfigValue(gsd, false, "enableNeptune"); //Galaxy Space's bug
+            } else if (preferredPlanetMod == 1) {
+                setConfigValue(ep, false, "main dimensions", "Mercury & Tier 4 Rocket", "Jupiter & Tier 5 Rocket", "Saturn & Tier 6 Rocket", "Uranus & Tier 7 Rocket", "Neptune & Tier 8 Rocket", "Pluto & Tier 9 Rocket", "Eris & Tier 10 Rocket");
+                setConfigValue(ep, false, "other dimensions", "Triton", "Europa", "IO", "Deimos", "Callisto", "Ganymede", "Rhea", "Titan", "Oberon", "Titania", "Iapetus", "Ceres", "Kuiper Belt", "Unreachable moons on the Celestial Selection Screen");
             }
         }
 
@@ -90,7 +90,7 @@ public class GCC {
         gsc = new Configuration(new File(configDirectory, "GalaxySpace/core.conf"));
         gsd = new Configuration(new File(configDirectory, "GalaxySpace/dimensions.conf"));
         sol = new Configuration(new File(configDirectory, "sol/sol.conf"));
-        gcc = new Configuration(new File(configDirectory, Tags.MOD_NAME + ".cfg"));
+        gcc = new Configuration(new File(configDirectory, Reference.MOD_NAME + ".cfg"));
 
         isTTSLoaded = Loader.isModLoaded("tothestars");
         isSolLoaded = Loader.isModLoaded("sol");

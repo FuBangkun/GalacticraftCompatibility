@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiConfiguration extends GuiScreen {
-    private static final String front = "gui." + Tags.MOD_ID + ".";
+    private static final String front = "gui." + Reference.MOD_ID + ".";
     private static final int BTN_BACK = 1001;
     private static final int BTN_MAP_GC = 1;
     private static final int BTN_MAP_AC = 2;
@@ -291,7 +291,7 @@ public class GuiConfiguration extends GuiScreen {
         GCCConfig.firstLaunch = false;
         GCCConfig.applyNextLaunch = true;
 
-        ConfigManager.sync(Tags.MOD_ID, net.minecraftforge.common.config.Config.Type.INSTANCE);
+        ConfigManager.sync(Reference.MOD_ID, net.minecraftforge.common.config.Config.Type.INSTANCE);
     }
 
     private void navigateTo(ScreenState nextScreen) {

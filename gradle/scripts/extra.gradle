@@ -3,3 +3,19 @@
 
 // If you wish to use the default helper methods, uncomment the line below
 // apply from: 'gradle/scripts/helpers.gradle'
+
+apply plugin: 'com.diffplug.spotless'
+
+spotless {
+    enforceCheck false
+
+    java {
+        target fileTree('src') {
+            include "*/java/**/*.java"
+        }
+
+        leadingTabsToSpaces()
+        endWithNewline()
+        removeUnusedImports()
+    }
+}

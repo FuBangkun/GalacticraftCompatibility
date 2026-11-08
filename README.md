@@ -1,10 +1,10 @@
-<p style="text-align: center;">
+<p align="center">
   <img src="src/main/resources/logo.png" alt="GalacticraftCompatibility Logo" width="128">
 </p>
 
-<h1 style="text-align: center;">GalacticraftCompatibility</h1>
+<h1 align="center">GalacticraftCompatibility</h1>
 
-<p style="text-align: center;">
+<p align="center">
   <a href="https://www.curseforge.com/minecraft/mc-mods/galacticraftcompatibility">
     <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/curseforge_vector.svg" alt="Available on CurseForge">
   </a>
@@ -13,7 +13,7 @@
   </a>
 </p>
 
-<p style="text-align: center;">
+<p align="center">
   <a href="#English">English</a> | <a href="#中文">中文</a>
 </p>
 
