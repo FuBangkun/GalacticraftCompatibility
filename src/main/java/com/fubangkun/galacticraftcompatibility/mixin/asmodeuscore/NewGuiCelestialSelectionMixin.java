@@ -71,7 +71,7 @@ public abstract class NewGuiCelestialSelectionMixin {
         cir.setReturnValue(CelestialVariants.filter(cir.getReturnValue(), CelestialVariants.mode()));
     }
 
-    @Inject(method = "initGui", at = @At("HEAD"))
+    @Inject(method = "initGui", at = @At("HEAD"), remap = true)
     private void gcc$initMode(CallbackInfo ci) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.player != null) {
@@ -90,7 +90,7 @@ public abstract class NewGuiCelestialSelectionMixin {
         return new int[]{width - lhs - 138, height - lhs - 58};
     }
 
-    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, remap = true)
     private void gcc$clickVariant(int x, int y, int button, CallbackInfo ci) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.currentScreen == null || button != 0) {

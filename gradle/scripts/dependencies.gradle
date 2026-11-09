@@ -87,7 +87,7 @@ dependencies {
     modImplementation 'curse.maven:more-planets-gc-addon-261990:7163195'
     modImplementation 'curse.maven:the-sol-510045:3424980'
     modImplementation 'curse.maven:interstellar-exoplanets-358968:4066266'
-    modImplementation 'curse.maven:galactic-research-822103:5369512'
+    modCompileOnly 'curse.maven:galactic-research-822103:5369512'
     modCompileOnly 'curse.maven:planet-progression-287275:4000252'
 }
 
